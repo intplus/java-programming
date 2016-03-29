@@ -1,4 +1,4 @@
-package Tank;
+package tank;
 
 public interface IForTank {
 //    void move();

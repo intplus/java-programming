@@ -1,4 +1,4 @@
-package Tank;
+package tank;
 
 
 public class Aggressor extends AbstractTank {

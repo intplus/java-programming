@@ -1,4 +1,4 @@
-package Tank;
+package tank;
 
 public class Defender extends AbstractTank {
     private int x;

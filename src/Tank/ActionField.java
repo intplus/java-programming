@@ -1,4 +1,4 @@
-package Tank;
+package tank;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,6 +7,7 @@ import java.awt.*;
 public class ActionField extends JPanel {
     final boolean COLORDED_MODE = false;
     private BattleField bf;
+
     private T34 t34;
     private Tiger tiger;
     private Bullet b;
@@ -62,7 +63,7 @@ public class ActionField extends JPanel {
 //
 //    }
 
-//    void destroy(Tank tank) throws Exception {
+//    void destroy(tank tank) throws Exception {
 //        tank.setX(-100);
 //        tank.setY(-100);
 //        repaint();

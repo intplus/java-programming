@@ -1,4 +1,4 @@
-package Tank;
+package tank;
 
 public class BT7 extends Tank {
     int speed = 2 * this.speed;
