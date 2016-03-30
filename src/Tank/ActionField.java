@@ -453,7 +453,6 @@ public class ActionField extends JPanel {
         t34.draw(g);
         tiger.draw(g);
         b.draw(g);
-
     }
 
 }

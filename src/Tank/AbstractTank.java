@@ -1,5 +1,6 @@
 package tank;
 
+// new version
 
 import java.awt.*;
 
@@ -126,6 +127,5 @@ public abstract class AbstractTank implements Drawable, Distroyable {
         }
 
     }
-
 
 }
