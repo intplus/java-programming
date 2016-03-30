@@ -50,7 +50,6 @@ public class ActionField extends JPanel {
         time = time % 60;
         int sec = (int) time;
         System.out.print(min + " min" + ":" + sec + " sec");
-
     }
 //    private boolean timer() {
 //        int i = 1;
@@ -63,11 +62,6 @@ public class ActionField extends JPanel {
 //
 //    }
 
-//    void destroy(tank tank) throws Exception {
-//        tank.setX(-100);
-//        tank.setY(-100);
-//        repaint();
-//    }
     void clean() throws Exception {
 
 //            if (haveAggressor()) {
@@ -82,11 +76,8 @@ public class ActionField extends JPanel {
 
             if (checkQuadrant(quadX, quadY))
                 moveToQuadrant(bf.coordFieldX(quadX), bf.coordFieldY(quadY));
-
-
     }
-    //	bf.qwX()
-//	bf.qwY()
+
     void moveToQuadrant(int v, int h) throws Exception {
         int x = 0;
         int y = 0;
@@ -459,14 +450,9 @@ public class ActionField extends JPanel {
             }
         }
 
-
-
-
         t34.draw(g);
-
         tiger.draw(g);
         b.draw(g);
-
 
     }
 
