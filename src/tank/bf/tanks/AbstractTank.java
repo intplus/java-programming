@@ -6,6 +6,7 @@ import tank.Direction;
 import tank.bf.BattleField;
 
 import java.awt.*;
+import java.util.Random;
 
 public abstract class AbstractTank implements Tank {
 
@@ -20,7 +21,7 @@ public abstract class AbstractTank implements Tank {
 
     protected Color tankColor;
     protected Color towerColor;
-    private boolean destroyed;
+    protected boolean destroyed;
 
 
     public void setX(int x) {
@@ -50,6 +51,15 @@ public abstract class AbstractTank implements Tank {
     }
 
     public void move(){
+
+    }
+    public int ran(int i) {
+        Random r = new Random();
+        int k;
+//        do {
+            k = r.nextInt(i);
+//        } while (k == 0);
+        return k;
     }
 
     public Bullet fire() {
@@ -71,14 +81,45 @@ public abstract class AbstractTank implements Tank {
         return new Bullet(bulletX, bulletY, direction);
     }
 
-
-
-    public void moveRandom() throws Exception {
-
-    }
-    public void moveToQuadrant(int v, int h) throws Exception {
-
-    }
+//    public void moveToQuadrant(int v, int h) throws Exception {
+//        int x = 0;
+//        int y = 0;
+//        while (x != v) {
+//            x = getX()/64 + 1;
+//            if (x > v) {
+//                turn(Direction.LEFT);
+//                move();
+//            }
+//            if (x < v) {
+//                turn(Direction.RIGHT);
+//                move();
+//            }
+//        }
+//        while (y != h) {
+//            y = getY()/64 + 1;
+//            if (y > h) {
+//                turn(Direction.UP);
+//                move();
+//            }
+//            if (y < h) {
+//                turn(Direction.DOWN);
+//                move();
+//            }
+//        }
+//    }
+//    public void moveRandome() {
+//        Random r = new Random();
+//        int dir = 0;
+//        while (true) {
+//            dir = r.nextInt(5);
+//            if (dir > 0) {
+//                direction.setId(dir);
+//                fire();
+//                move();
+//                fire();
+//            }
+//        }
+//    }
     public void clean() throws Exception {
 
     }

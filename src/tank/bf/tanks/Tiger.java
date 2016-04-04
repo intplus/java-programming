@@ -5,6 +5,7 @@ import tank.Direction;
 import tank.bf.BattleField;
 
 import java.awt.*;
+import java.util.Random;
 
 
 public class Tiger extends AbstractTank {
@@ -33,8 +34,34 @@ public class Tiger extends AbstractTank {
             super.destroy();
         }
     }
+    int size = 0;
     @Override
     public Action setUp() {
+//        int dir = ran(4);
+//        switch (dir) {
+//            case 1: setDirection(Direction.UP);
+//
+//                break;
+//            case 2: setDirection(Direction.DOWN);
+//
+//                break;
+//            case 3: setDirection(Direction.RIGHT);
+//
+//                break;
+//            case 4: setDirection(Direction.LEFT);
+//
+//                break;
+//        }
+
+        Random r = new Random();
+        int k = 0;
+        do {
+            k = r.nextInt(3);
+            System.out.println("k = " + k);
+        } while (k == 0);
+        if (k == 1) return Action.FIRE;
+        if (k == 2) return Action.MOVE;
+
         return Action.FIRE;
     }
 

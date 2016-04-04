@@ -70,6 +70,7 @@ public class ActionField extends JPanel {
                 defender.destroy();
                 return true;
             }
+
         }
         return false;
     }
@@ -235,31 +236,7 @@ public class ActionField extends JPanel {
             }
         }
 
-//        for (int j = 0; j < bf.getDimentionY(); j++) {
-//            for (int k = 0; k < bf.getDimentionX(); k++) {
-//                if (bf.scanQuadrant(j, k).equals("B")) {
-//                    String coordinates = getQuadrantXY(j + 1, k + 1);
-//                    int separator = coordinates.indexOf("_");
-//                    int y = Integer.parseInt(coordinates.substring(0, separator));
-//                    int x = Integer.parseInt(coordinates.substring(separator + 1));
-//                    g.setColor(new Color(239, 126, 13));
-//                    g.fillRect(x, y, bf.QUADRANT, bf.QUADRANT);
-//
-//                    g.setColor(new Color(149, 133, 117));
-//                    for (int m = 0; m < bf.QUADRANT; m += (bf.QUADRANT / 4))
-//                        g.drawLine(x, y + m, x + 63, y + m);
-//
-//                    for (int m = 0, count = 0; m < bf.QUADRANT; m += 16, count += 1) {
-//                        int dl = 0;
-//                        if (count % 2 == 0)
-//                            dl = 10;
-//                        for (int l = 0; l < bf.QUADRANT; l += 24) {
-//                            g.drawLine(x + l + dl, y + m, x + l + dl, (y + 16) + m);
-//                        }
-//                    }
-//                }
-//            }
-//        }
+
         bf.draw(g);
         defender.draw(g);
         aggressor.draw(g);

@@ -11,7 +11,7 @@ public abstract class SimpleBFObject implements BFObject {
 
     protected Color color;
 
-    private boolean isDestroyed = false;
+    protected boolean isDestroyed = false;
 
     public SimpleBFObject(int x, int y) {
         this.x = x;
