@@ -2,24 +2,36 @@ package tank.bf;
 
 import tank.bf.tanks.SimpleBFObject;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.IOException;
 
 public class Eagle extends SimpleBFObject {
+    private String IMAGE_NAME = "hq.gif";
+    private Image iTank;
     public Eagle(int x, int y) {
         super(x, y);
-        color = new Color(255, 0, 0);
+        try {
+            iTank = ImageIO.read(new File(IMAGE_NAME));
+        } catch (IOException e) {
+            System.err.println("Can't find image: " + IMAGE_NAME);
+        }
 
     }
 
     @Override
     public void draw(Graphics g) {
         if (!isDestroyed) {
-            g.setColor(this.color);
-            int[] x = {this.getX()+32, this.getX()+25,this.getX()+5, this.getX()+18,
-                    this.getX()+10, this.getX()+32, this.getX()+54, this.getX()+46, this.getX()+59, this.getX()+39};
-            int[] y = {this.getY()+5, this.getY()+23, this.getY()+23, this.getY()+37, this.getY()+59, this.getY()+45,
-                    this.getY()+59, this.getY()+37, this.getY()+23, this.getY()+23};
-            g.fillPolygon(x, y, 10);
+
+            g.drawImage(iTank, this.getX() + 5, this.getY(), new ImageObserver() {
+                @Override
+                public boolean imageUpdate(Image img, int infoflags, int x, int y,
+                                           int width, int height) {
+                    return false;
+                }
+            });
         }
     }
 

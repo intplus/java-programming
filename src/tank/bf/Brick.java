@@ -2,34 +2,38 @@ package tank.bf;
 
 import tank.bf.tanks.SimpleBFObject;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.IOException;
 
 public class Brick extends SimpleBFObject {
+    private String IMAGE_NAME = "brick.png";
+    private Image iBrick;
+
     public Brick(int x, int y) {
         super(x, y);
-        color = new Color(239, 126, 13);
+        try {
+            iBrick = ImageIO.read(new File(IMAGE_NAME));
+        } catch (IOException e) {
+            System.err.println("Can't find image: " + IMAGE_NAME);
+        }
 
     }
 
     @Override
     public void draw(Graphics g) {
         if (!isDestroyed) {
-            g.setColor(this.color);
-            g.fillRect(getX(), getY(), 64, 64);
-            g.setColor(new Color(149, 133, 117));
-            for (int m = 0; m < 64; m += (64 / 4)) {
-                g.drawLine(getX(), getY() + m, getX() + 63, getY() + m);
-            }
 
-            for (int m = 0, count = 0; m < 64; m += 16, count += 1) {
-                int dl = 0;
-                if (count % 2 == 0) {
-                    dl = 10;
-                }
-                for (int l = 0; l < 64; l += 24) {
-                    g.drawLine(getX() + l + dl, getY() + m, getX() + l + dl, (getY() + 16) + m);
-                }
-            }
+
+            g.drawImage(iBrick, this.getX(), this.getY(), new ImageObserver() {
+                @Override
+                public boolean imageUpdate(Image img, int infoflags, int x, int y,
+                                           int width, int height) {
+                        return false;
+                    }
+                });
         }
     }
 }

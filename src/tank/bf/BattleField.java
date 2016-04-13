@@ -1,6 +1,6 @@
 package tank.bf;
 
-import java.awt.Graphics;
+import java.awt.*;
 
 public class BattleField implements Drawable {
 
@@ -13,16 +13,26 @@ public class BattleField implements Drawable {
     private int bfHeight = 576;
 
     private String[][] battleFieldTemplate = {
-            {"B", "B", "B", "B", "B", "B", "B", "B", "B"},
+            {"B", "B", "B", " ", "B", " ", "B", "B", "B"},
             {"B", " ", " ", " ", " ", " ", " ", " ", "B"},
-            {"B", "B", "B", " ", "R", " ", "B", "B", "B"},
-            {"B", "B", "B", " ", "R", " ", "B", "B", "B"},
-            {"B", "B", "B", " ", "R", " ", "B", "B", "B"},
-            {"B", "B", " ", "R", "R", "R", " ", "B", "B"},
-            {"B", "B", " ", " ", " ", " ", " ", "B", "B"},
-            {"B", " ", " ", "B", "E", "B", " ", " ", "B"},
-            {"B", " ", " ", "B", "R", "B", " ", " ", "B"}
+            {" ", " ", " ", "R", "R", " ", "B", "B", "B"},
+            {"B", "B", "B", "B", "R", " ", "B", "B", "B"},
+            {"B", "B", "B", "B", "R", "B", "B", "B", "B"},
+            {" ", " ", " ", "R", "R", "R", " ", " ", " "},
+            {" ", " ", " ", "R", "B", "B", " ", " ", " "},
+            {"B", "B", "B", "R", "R", "R", " ", "B", "B"},
+            {" ", " ", " ", "R", "E", " ", " ", " ", " "}
     };
+//            {" ", " ", "R", " ", " ", " ", " ", " ", " "},
+//            {" ", "R", "R", " ", "R", " ", " ", " ", " "},
+//            {" ", "R", "R", " ", "R", "R", "R", " ", "R"},
+//            {" ", " ", "B", " ", "R", " ", " ", " ", " "},
+//            {" ", "R", "R", " ", "R", " ", " ", " ", " "},
+//            {" ", "R", " ", "R", "R", "R", "R", "R", " "},
+//            {"R", "R", "R", "R", "R", "R", " ", " ", " "},
+//            {" ", " ", " ", "R", "R", "R", " ", " ", " "},
+//            {" ", " ", " ", "R", "E", "B", " ", " ", " "}
+//    };
 
     private BFObject[][] battleField = new BFObject[9][9];
 
@@ -57,7 +67,7 @@ public class BattleField implements Drawable {
                     bfObject = new Rock(x, y);
                 } else if (obj.equals(EAGLE)) {
                     bfObject = new Eagle(x, y);
-                } else if (obj.equals(ROCK)) {
+                } else if (obj.equals(WATER)) {
                     bfObject = new Water(x, y);
                 } else {
                     bfObject = new Blank(x, y);
@@ -78,14 +88,25 @@ public class BattleField implements Drawable {
 
     public void destroyObject(int v, int h) throws Exception{
         battleField[v][h].destroy();
+
     }
 
     public BFObject scanQuadrant(int v, int h) {
         return battleField[v][h];
     }
+    public String scanQuadrant2(int v, int h) {
+        return battleFieldTemplate[v][h];
+    }
+
+    @Override
+    public String toString() {
+        if (this.equals("Rock")) return "R";
+        return "P";
+
+    }
 
     public String getAggressorLocation() {
-        return "64_128";
+        return "128_0";
     }
 
     public int getBfWidth() {
@@ -95,5 +116,6 @@ public class BattleField implements Drawable {
     public int getBfHeight() {
         return bfHeight;
     }
+
 }
 

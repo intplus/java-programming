@@ -2,19 +2,36 @@ package tank.bf.tanks;
 
 import tank.Direction;
 import tank.bf.BattleField;
+
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.IOException;
 
 public class T34 extends AbstractTank {
+    private String IMAGE_NAME;
+    private Image iTank;
+    private Image iTank_up;
+    private Image iTank_down;
+    private Image iTank_left;
+    private Image iTank_right;
+
     public T34(BattleField bf) {
         super(bf);
-        tankColor = new Color(0,80,0);
-        towerColor = new Color(0, 100, 0);
+        try {
+            iTank_up = ImageIO.read(new File("t34_up.png"));
+            iTank_down = ImageIO.read(new File("t34_down.png"));
+            iTank_left = ImageIO.read(new File("t34_left.png"));
+            iTank_right = ImageIO.read(new File("t34_right.png"));
+        } catch (IOException e) {
+            System.err.println("Can't find image: ");
+        }
+
 
     }
     public T34(BattleField bf, int x, int y, Direction direction) {
         super(bf, x, y, direction);
-        tankColor = new Color(0,80,0);
-        towerColor = new Color(0,100,0);
     }
 
     private Object[] actions = new Object[] {
@@ -29,7 +46,6 @@ public class T34 extends AbstractTank {
             Direction.LEFT
     };
 
-    private int step = 0;
 
     @Override
     public Action setUp() throws Exception{
@@ -40,32 +56,42 @@ public class T34 extends AbstractTank {
 
     @Override
     public void draw(Graphics g) {
-        if (!destroyed) {
-            g.setColor(tankColor);
-//            g.fillRect(this.getX() + 20, this.getY() + 20, 24, 24);
-            g.fillOval(this.getX() + 18, this.getY() + 18, 28, 28);
 
-            g.setColor(towerColor);
+        int dx = 0;
+        int dy = 0;
+
+        if (!destroyed) {
             if (getDirection() == Direction.UP) {
-                g.fillRect(getX() + 12, getY() + 16, 8, 32);
-                g.fillRect(getX() + 44, getY() + 16, 8, 32);
-                g.fillRect(getX() + 28, getY() + 4, 8, 34);
+                iTank = iTank_up;
+                dx = 9;
+                dy = 3;
             }
             if (getDirection() == Direction.DOWN) {
-                g.fillRect(getX() + 12, getY() + 16, 8, 32);
-                g.fillRect(getX() + 44, getY() + 16, 8, 32);
-                g.fillRect(getX() + 28, getY() + 26, 8, 34);
+                iTank = iTank_down;
+                dx = 9;
+                dy = 3;
             }
             if (getDirection() == Direction.LEFT) {
-                g.fillRect(getX() + 16, getY() + 12, 32, 8);
-                g.fillRect(getX() + 16, getY() + 44, 32, 8);
-                g.fillRect(getX() + 4, getY() + 28, 34, 8);
+                iTank = iTank_left;
+                dx = 3;
+                dy = 9;
             }
             if (getDirection() == Direction.RIGHT) {
-                g.fillRect(getX() + 16, getY() + 12, 32, 8);
-                g.fillRect(getX() + 16, getY() + 44, 32, 8);
-                g.fillRect(getX() + 26, getY() + 28, 34, 8);
+                iTank = iTank_right;
+                dx = 3;
+                dy = 9;
             }
+
+
+
+            g.drawImage(iTank, this.getX() + dx, this.getY() + dy, new ImageObserver() {
+                @Override
+                public boolean imageUpdate(Image img, int infoflags, int x, int y,
+                                           int width, int height) {
+                    return false;
+                }
+            });
+
         }
     }
 }

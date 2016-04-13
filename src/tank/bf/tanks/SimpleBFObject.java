@@ -5,6 +5,7 @@ import tank.bf.BFObject;
 import java.awt.*;
 
 public abstract class SimpleBFObject implements BFObject {
+
     // current position on BF
     private int x;
     private int y;

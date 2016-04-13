@@ -1,8 +1,4 @@
-package tank.bf.tanks;
-
-import tank.Direction;
-import tank.bf.Distroyable;
-import tank.bf.Drawable;
+package tank.bf;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -10,52 +6,46 @@ import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 
-public class Bullet implements Drawable, Distroyable {
-
-    private int speed = 2;
+/**
+ * Created by alpo123 on 13.04.16.
+ */
+public class Bomb implements Drawable, Distroyable {
+    private String IMAGE_NAME = "fire.png";
+    private Image iBomb;
+    protected boolean destroyed;
     private int x;
     private int y;
-    private Direction direction;
-    protected boolean destroyed;
 
-    public Bullet() {
-
-    }
-
-    private String IMAGE_NAME = "bullet.png";
-    private Image iBullet;
-
-    public Bullet(int x, int y, Direction direction) {
+    public Bomb(int x, int y) {
         this.x = x;
         this.y = y;
-        this.direction = direction;
         this.destroyed = false;
         try {
-            iBullet = ImageIO.read(new File(IMAGE_NAME));
+            iBomb = ImageIO.read(new File(IMAGE_NAME));
         } catch (IOException e) {
             System.err.println("Can't find image: " + IMAGE_NAME);
         }
+    }
 
+    @Override
+    public boolean isDestroyed() {
+        return destroyed;
     }
 
     public int getX() {
         return x;
     }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
     public int getY() {
         return y;
     }
 
-    public Direction getDirection() {
-        return direction;
-    }
-    public int getSpeed() {
-        return speed;
-    }
-    public void updateX (int x) {
-        this.x += x;
-    }
-    public void updateY (int y) {
-        this.y += y;
+    public void setY(int y) {
+        this.y = y;
     }
 
     @Override
@@ -64,21 +54,18 @@ public class Bullet implements Drawable, Distroyable {
         int dy = 0;
 
         if (!destroyed) {
-            g.drawImage(iBullet, this.getX() + dx, this.getY() + dy, new ImageObserver() {
+            g.drawImage(iBomb, this.getX() + dx, this.getY() + dy, new ImageObserver() {
                 @Override
                 public boolean imageUpdate(Image img, int infoflags, int x, int y,
                                            int width, int height) {
                     return false;
                 }
             });
-
         }
     }
+
+    @Override
     public void destroy() {
         destroyed = true;
-    }
-    @Override
-    public boolean isDestroyed() {
-        return destroyed;
     }
 }

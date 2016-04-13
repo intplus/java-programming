@@ -10,6 +10,10 @@ public interface Tank extends Drawable, Distroyable {
 
     public void move();
 
+//    public boolean setSuperBullet(boolean SuperBullet);
+
+//    public boolean isSuperBullet();
+
     public Bullet fire();
 
     public int getX();
