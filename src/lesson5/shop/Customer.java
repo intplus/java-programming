@@ -2,10 +2,13 @@ package lesson5.shop;
 
 public class Customer {
     private String name;
-    private String surname;
+    private String number;
+    public Customer () {
 
-    public Customer() {
-
+    }
+    public Customer(String name, String number) {
+        this.name = name;
+        this.number = number;
     }
 
     public String getName() {
@@ -16,11 +19,16 @@ public class Customer {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getNumber() {
+        return number;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    @Override
+    public String toString() {
+        return this.getName();
     }
 }

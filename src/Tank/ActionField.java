@@ -1,8 +1,6 @@
 package tank;
 
-import tank.bf.BFObject;
-import tank.bf.BattleField;
-import tank.bf.Blank;
+import tank.bf.*;
 import tank.bf.tanks.*;
 import tank.bf.tanks.Action;
 
@@ -11,16 +9,21 @@ import java.awt.*;
 
 
 public class ActionField extends JPanel {
-    final boolean COLORDED_MODE = false;
+
 
     private BattleField bf;
     private Tank defender;
     private Tank aggressor;
     private Bullet bullet;
+    private Bomb bomb;
+    private boolean superBullet = false;
+    public boolean stopGame = false;
+//    private Cell cell;
+
 
     void runTheGame() throws Exception {
 
-        while (true) {
+        while (!stopGame) {
             if (!aggressor.isDestroyed() && !defender.isDestroyed()) {
                 processAction(aggressor.setUp(), aggressor);
             }
@@ -33,6 +36,9 @@ public class ActionField extends JPanel {
         if (a == Action.MOVE) {
             processMove(t);
         } else if (a == Action.FIRE) {
+            if (t instanceof BT7) {
+                superBullet = true;
+            }
             processTurn(t);
             processFire(t.fire());
         }
@@ -46,27 +52,40 @@ public class ActionField extends JPanel {
         return Integer.parseInt(quad.substring(0, quad.indexOf("_")));
     }
     private boolean processInterception() throws Exception {
+
         String quad = getQuadrant(bullet.getX(), bullet.getY());
         int y = giveY(quad);
         int x = giveX(quad);
 
         if (y >= 0 && y < 9 && x >= 0 && x < 9) {
             BFObject bfObject = bf.scanQuadrant(y, x);
-            if (!bfObject.isDestroyed() && !(bfObject instanceof Blank)) {
+
+            if (superBullet && bfObject instanceof Rock && !bfObject.isDestroyed()) {
                 bf.destroyObject(y, x);
                 return true;
             }
 
+            if (!bfObject.isDestroyed() && (bfObject instanceof Rock)){
+                return true;
+            }
+
+            if (!bfObject.isDestroyed() && !(bfObject instanceof Blank)) {
+                bf.destroyObject(y, x);
+                return true;
+            }
+            if (!bfObject.isDestroyed() && (bfObject instanceof Eagle)) {
+                bf.destroyObject(y, x);
+                stopGame = true;
+            }
+
             // check aggressor
-            if (!aggressor.isDestroyed() && checkInterception(getQuadrant(aggressor.getX(),
-                    aggressor.getY()), quad)) {
+            if (!aggressor.isDestroyed() && checkInterception(getQuadrant(aggressor.getX(), aggressor.getY()), quad)) {
                 aggressor.destroy();
                 return true;
             }
 
             // check aggressor
-            if (!defender.isDestroyed() && checkInterception(getQuadrant(defender.getX(),
-                    defender.getY()), quad)) {
+            if (!defender.isDestroyed() && checkInterception(getQuadrant(defender.getX(), defender.getY()), quad)) {
                 defender.destroy();
                 return true;
             }
@@ -74,8 +93,9 @@ public class ActionField extends JPanel {
         }
         return false;
     }
-    public String getQuadrant(int x, int y) {
+    public String getQuadrant(int x, int y) throws Exception{
         // input data should be correct
+
         return y / 64 + "_" + x / 64;
     }
     private boolean checkInterception(String object, String quadrant) {
@@ -110,7 +130,8 @@ public class ActionField extends JPanel {
 
             // check limits x: 0, 513; y: 0, 513
             if ((direction == Direction.UP && tank.getY() == 0) || (direction == Direction.DOWN && tank.getY() >= 512)
-                    || (direction == Direction.LEFT && tank.getX() == 0) || (direction == Direction.RIGHT && tank.getX() >= 512)) {
+                    || (direction == Direction.LEFT && tank.getX() == 0)
+                    || (direction == Direction.RIGHT && tank.getX() >= 512)) {
                 System.out.println("[illegal move] direction: " + direction
                         + " tankX: " + tank.getX() + ", tankY: " + tank.getY());
                 return;
@@ -131,6 +152,7 @@ public class ActionField extends JPanel {
             if (!(bfobject instanceof Blank) && !bfobject.isDestroyed()) {
                 System.out.println("[illegal move] direction: " + direction
                         + " tankX: " + tank.getX() + ", tankY: " + tank.getY());
+                processFire(tank.fire());
                 return;
             }
 
@@ -162,7 +184,13 @@ public class ActionField extends JPanel {
         while (checkBullet()) {
 
             if (processInterception()) {
+//                bomb.setX(bullet.getX());
+//                bomb.setY(bullet.getY());
+//                Thread.sleep(1000);
+//                bomb.destroy();
                 bullet.destroy();
+
+                superBullet = false;
             } else
                 switch (bullet.getDirection()) {
                     case UP:
@@ -180,12 +208,14 @@ public class ActionField extends JPanel {
             }
 
         }
+        superBullet = false;
 
     }
     boolean checkBullet() throws Exception {
-        if ((bullet.getX() > -14 && bullet.getX() <= 9 * 64 + 10)
-                && (bullet.getY() > -14 && bullet.getY() <= 9 * 64 + 10))
+        if ((bullet.getX() > -17 && bullet.getX() <= 9 * 64 + 10)
+                && (bullet.getY() > -17 && bullet.getY() <= 9 * 64 + 10)) {
             return true;
+        }
         return false;
     }
 	/*
@@ -195,10 +225,12 @@ public class ActionField extends JPanel {
 
     public ActionField() throws Exception {
         bf = new BattleField();
+        bomb = new Bomb(-100, -100);
 
         defender = new T34(bf);
         String location = bf.getAggressorLocation();
-        aggressor = new BT7(bf,
+//        aggressor = new BT7(bf,
+            aggressor = new Tiger(bf,
                 Integer.parseInt(location.split("_")[1]), Integer.parseInt(location.split("_")[0]), Direction.RIGHT);
 
 
@@ -221,26 +253,18 @@ public class ActionField extends JPanel {
         Color cc;
         for (int v = 0; v < 9; v++) {
             for (int h = 0; h < 9; h++) {
-                if (COLORDED_MODE) {
-                    if (i % 2 == 0) {
-                        cc = new Color(204, 255, 204);
-                    } else {
-                        cc = new Color(233, 243, 255);
-                    }
-                } else {
-                    cc = new Color(138, 246, 138);
-                }
+                cc = new Color(138, 246, 138);
                 i++;
                 g.setColor(cc);
                 g.fillRect(h * 64, v * 64, 64, 64);
             }
         }
-
-
         bf.draw(g);
         defender.draw(g);
         aggressor.draw(g);
         bullet.draw(g);
+        bomb.draw(g);
     }
+
 
 }
