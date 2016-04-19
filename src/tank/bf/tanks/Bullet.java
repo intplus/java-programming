@@ -31,7 +31,7 @@ public class Bullet implements Drawable, Distroyable {
         this.direction = direction;
         this.destroyed = false;
         try {
-            iBullet = ImageIO.read(new File(IMAGE_NAME));
+            iBullet = ImageIO.read(new File(IMAGE_NAME).getAbsoluteFile());
         } catch (IOException e) {
             System.err.println("Can't find image: " + IMAGE_NAME);
         }

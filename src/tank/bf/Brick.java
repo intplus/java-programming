@@ -15,7 +15,7 @@ public class Brick extends SimpleBFObject {
     public Brick(int x, int y) {
         super(x, y);
         try {
-            iBrick = ImageIO.read(new File(IMAGE_NAME));
+            iBrick = ImageIO.read(new File(IMAGE_NAME).getAbsoluteFile());
         } catch (IOException e) {
             System.err.println("Can't find image: " + IMAGE_NAME);
         }

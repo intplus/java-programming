@@ -14,7 +14,7 @@ public class Eagle extends SimpleBFObject {
     public Eagle(int x, int y) {
         super(x, y);
         try {
-            iTank = ImageIO.read(new File(IMAGE_NAME));
+            iTank = ImageIO.read(new File(IMAGE_NAME).getAbsoluteFile());
         } catch (IOException e) {
             System.err.println("Can't find image: " + IMAGE_NAME);
         }

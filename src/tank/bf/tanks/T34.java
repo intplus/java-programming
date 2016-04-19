@@ -2,6 +2,7 @@ package tank.bf.tanks;
 
 import tank.Direction;
 import tank.bf.BattleField;
+import tank.bf.Water;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -11,7 +12,7 @@ import java.io.IOException;
 
 public class T34 extends AbstractTank {
     private String IMAGE_NAME;
-    private Image iTank;
+//    private Image iTank;
     private Image iTank_up;
     private Image iTank_down;
     private Image iTank_left;
@@ -20,10 +21,10 @@ public class T34 extends AbstractTank {
     public T34(BattleField bf) {
         super(bf);
         try {
-            iTank_up = ImageIO.read(new File("t34_up.png"));
-            iTank_down = ImageIO.read(new File("t34_down.png"));
-            iTank_left = ImageIO.read(new File("t34_left.png"));
-            iTank_right = ImageIO.read(new File("t34_right.png"));
+            iTank_up = ImageIO.read(new File("t34_up.png").getAbsoluteFile());
+            iTank_down = ImageIO.read(new File("t34_down.png").getAbsoluteFile());
+            iTank_left = ImageIO.read(new File("t34_left.png").getAbsoluteFile());
+            iTank_right = ImageIO.read(new File("t34_right.png").getAbsoluteFile());
         } catch (IOException e) {
             System.err.println("Can't find image: ");
         }
@@ -53,6 +54,23 @@ public class T34 extends AbstractTank {
         turn((Direction) actionsDirection[ran(4)]);
         return (Action) actions[ran(2)];
     }
+//    private void setImage() {
+//        tankImage = new Image[5];
+//        try{
+//
+//            tankImage[1] = ImageIO.read(new File(IMAGE1).getAbsoluteFile());
+//            tankImage[2] = ImageIO.read(new File(IMAGE2).getAbsoluteFile());
+//            tankImage[3] = ImageIO.read(new File(IMAGE3).getAbsoluteFile());
+//            tankImage[4] = ImageIO.read(new File(IMAGE4).getAbsoluteFile());
+//
+//        } catch (IOException e) {
+//            System.err.println("T34 can't find image:");
+//
+//        }
+//    }
+//
+//    }
+
 
     @Override
     public void draw(Graphics g) {
@@ -82,7 +100,18 @@ public class T34 extends AbstractTank {
                 dy = 9;
             }
 
-
+            int v = getY()/64;
+            int h = getX()/64;
+            float f = 1.0f;
+            if (bf.scanQuadrant(v, h) instanceof Water) {
+                f = 0.5f;
+            } else {
+                f = 1.0f;
+            }
+            Graphics2D g2d = (Graphics2D) g;
+            Composite org =g2d.getComposite();
+            Composite translucent = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, f);
+            g2d.setComposite(translucent);
 
             g.drawImage(iTank, this.getX() + dx, this.getY() + dy, new ImageObserver() {
                 @Override
@@ -91,6 +120,7 @@ public class T34 extends AbstractTank {
                     return false;
                 }
             });
+            g2d.setComposite(org);
 
         }
     }

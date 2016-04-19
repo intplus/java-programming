@@ -3,6 +3,7 @@ package tank.bf.tanks;
 // new version
 
 import lesson5.search.AStar;
+import tank.ActionField;
 import tank.Direction;
 import tank.bf.BattleField;
 import tank.bf.Cell;
@@ -11,6 +12,7 @@ import tank.bf.Table;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -31,9 +33,10 @@ public abstract class AbstractTank implements Tank {
 
     protected Direction direction;
 
-    private BattleField bf;
+    protected BattleField bf;
     private int speed = 5;
     protected int movePath = 1;
+    protected Image iTank;
 
     protected Color tankColor;
     protected Color towerColor;
@@ -106,6 +109,7 @@ public abstract class AbstractTank implements Tank {
     }
 
     public void draw(Graphics g) {
+
         if (!destroyed) {
             g.setColor(tankColor);
             g.fillRect(this.getX() + 20, this.getY() + 20, 24, 24);
@@ -132,6 +136,7 @@ public abstract class AbstractTank implements Tank {
                 g.fillRect(getX() + 26, getY() + 28, 34, 8);
             }
         }
+
     }
     @Override
     public boolean isDestroyed() {
@@ -164,8 +169,6 @@ public abstract class AbstractTank implements Tank {
 
     public void searchWay(Tank t) {
 
-
-
         for (int v = 0; v < 9; ++v) {
             for (int h = 0; h < 9; ++h) {
                 if (bf.scanQuadrant2(v, h).equals("R")) {
@@ -180,7 +183,6 @@ public abstract class AbstractTank implements Tank {
             }
         }
 
-        // Стартовая и конечная
         cellList.get(t.getX()/64, t.getY()/64).setAsStart();
         cellList.get(4, 8).setAsFinish();
         Cell start = cellList.get(t.getX()/64, t.getY()/64);
@@ -188,29 +190,21 @@ public abstract class AbstractTank implements Tank {
 
         cellList.printp();
 
-        // Фух, начинаем
         boolean found = false;
         boolean noroute = false;
 
-        //1) Добавляем стартовую клетку в открытый список.
         openList.push(start);
 
-        //2) Повторяем следующее:
         while (!found && !noroute) {
-            //a) Ищем в открытом списке клетку с наименьшей стоимостью F. Делаем ее текущей клеткой.
+
             Cell min = openList.getFirst();
             for (Cell cell : openList) {
-                // тут я специально тестировал, при < или <= выбираются разные пути,
-                // но суммарная стоимость G у них совершенно одинакова. Забавно, но так и должно быть.
                 if (cell.F < min.F) min = cell;
             }
 
-            //b) Помещаем ее в закрытый список. (И удаляем с открытого)
             closedList.push(min);
             openList.remove(min);
-//            System.out.println(closedList);
 
-            //c) Для каждой из соседних 4x клеток ...
             tmpList.clear();
             tmpList.add(cellList.get(min.x,     min.y - 1));
             tmpList.add(cellList.get(min.x + 1, min.y));
@@ -218,10 +212,9 @@ public abstract class AbstractTank implements Tank {
             tmpList.add(cellList.get(min.x - 1, min.y));
 
             for (Cell neightbour : tmpList) {
-                //Если клетка непроходимая или она находится в закрытом списке, игнорируем ее. В противном случае делаем следующее.
+
                 if (neightbour.blocked || closedList.contains(neightbour)) continue;
 
-                //Если клетка еще не в открытом списке, то добавляем ее туда. Делаем текущую клетку родительской для это клетки. Расчитываем стоимости F, G и H клетки.
                 if (!openList.contains(neightbour)) {
                     openList.add(neightbour);
                     neightbour.parent = min;
@@ -231,21 +224,15 @@ public abstract class AbstractTank implements Tank {
                     continue;
                 }
 
-                // Если клетка уже в открытом списке, то проверяем, не дешевле ли будет путь через эту клетку. Для сравнения используем стоимость G.
                 if (neightbour.G + neightbour.price(min) < min.G) {
-                    // Более низкая стоимость G указывает на то, что путь будет дешевле. Эсли это так, то меняем родителя клетки на текущую клетку и пересчитываем для нее стоимости G и F.
-                    neightbour.parent = min; // вот тут я честно хз, надо ли min.parent или нет
+
+                    neightbour.parent = min;
                     neightbour.H = neightbour.mandist(finish);
                     neightbour.G = start.price(min);
                     neightbour.F = neightbour.H + neightbour.G;
                 }
 
-                // Если вы сортируете открытый список по стоимости F, то вам надо отсортировать свесь список в соответствии с изменениями.
             }
-
-            //d) Останавливаемся если:
-            //Добавили целевую клетку в открытый список, в этом случае путь найден.
-            //Или открытый список пуст и мы не дошли до целевой клетки. В этом случае путь отсутствует.
 
             if (openList.contains(finish)) {
                 found = true;
@@ -256,12 +243,9 @@ public abstract class AbstractTank implements Tank {
             }
         }
 
-
-        //3) Сохраняем путь. Двигаясь назад от целевой точки, проходя от каждой точки к ее родителю до тех пор, пока не дойдем до стартовой точки. Это и будет наш путь.
         if (!noroute) {
             Cell rd = finish.parent;
             while (!rd.equals(start)) {
-//                System.out.println(rd.x + "_" + rd.y);
                 rezList.add(rd.x + "_" + rd.y);
 
                 rd.road = true;
@@ -275,5 +259,6 @@ public abstract class AbstractTank implements Tank {
         }
         System.out.println(rezList.size());
     }
+
 
 }

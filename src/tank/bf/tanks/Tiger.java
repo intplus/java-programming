@@ -17,7 +17,7 @@ public class Tiger extends AbstractTank {
     private Image iTank_down;
     private Image iTank_left;
     private Image iTank_right;
-    private Image iTank;
+//    private Image iTank;
 
     private int armor = 1;
 
@@ -31,10 +31,10 @@ public class Tiger extends AbstractTank {
         super(bf, x, y, direction);
         movePath = 2;
         try {
-            iTank_up = ImageIO.read(new File("tiger_up.png"));
-            iTank_down = ImageIO.read(new File("tiger_down.png"));
-            iTank_left = ImageIO.read(new File("tiger_left.png"));
-            iTank_right = ImageIO.read(new File("tiger_right.png"));
+            iTank_up = ImageIO.read(new File("tiger_up.png").getAbsoluteFile());
+            iTank_down = ImageIO.read(new File("tiger_down.png").getAbsoluteFile());
+            iTank_left = ImageIO.read(new File("tiger_left.png").getAbsoluteFile());
+            iTank_right = ImageIO.read(new File("tiger_right.png").getAbsoluteFile());
 
         } catch (IOException e) {
             System.err.println("Can't find image: ");

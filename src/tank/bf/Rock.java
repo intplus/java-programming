@@ -15,7 +15,7 @@ public class Rock extends SimpleBFObject {
     public Rock(int x, int y) {
         super(x, y);
         try {
-            iRock = ImageIO.read(new File(IMAGE_NAME));
+            iRock = ImageIO.read(new File(IMAGE_NAME).getAbsoluteFile());
         } catch (IOException e) {
             System.err.println("Can't find image: " + IMAGE_NAME);
         }
