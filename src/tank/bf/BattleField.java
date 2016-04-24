@@ -1,6 +1,7 @@
 package tank.bf;
 
 import java.awt.*;
+import java.util.Random;
 
 public class BattleField implements Drawable {
 
@@ -13,30 +14,31 @@ public class BattleField implements Drawable {
     private int bfHeight = 576;
 
     private String[][] battleFieldTemplate = {
-            {"B", "B", "B", "W", "W", "W", "B", "B", "B"},
-            {"B", " ", " ", "W", "W", "W", " ", " ", "B"},
-            {" ", " ", " ", "W", "W", "W", "B", "B", "B"},
-            {"W", "W", "W", "W", "R", " ", "B", "B", "B"},
-            {"B", "B", "B", "B", "R", "W", "B", "B", "B"},
-            {" ", " ", " ", "R", "R", "R", "W", " ", " "},
-            {"W", "W", "W", "R", "B", "B", " ", " ", " "},
-            {"W", "W", "W", "R", "R", "R", " ", "B", "B"},
-            {" ", "W", " ", "R", "E", " ", " ", " ", " "}
-    };
-//            {" ", " ", "R", " ", " ", " ", " ", " ", " "},
-//            {" ", "R", "R", " ", "R", " ", " ", " ", " "},
-//            {" ", "R", "R", " ", "R", "R", "R", " ", "R"},
-//            {" ", " ", "B", " ", "R", " ", " ", " ", " "},
-//            {" ", "R", "R", " ", "R", " ", " ", " ", " "},
-//            {" ", "R", " ", "R", "R", "R", "R", "R", " "},
-//            {"R", "R", "R", "R", "R", "R", " ", " ", " "},
-//            {" ", " ", " ", "R", "R", "R", " ", " ", " "},
-//            {" ", " ", " ", "R", "E", "B", " ", " ", " "}
+//            {" ", " ", "B", "W", "W", "W", "B", "B", "B"},
+//            {" ", " ", " ", "W", "W", "W", " ", " ", "B"},
+//            {" ", " ", " ", "W", "W", "W", "B", "B", "B"},
+//            {"W", "W", "W", "W", "R", " ", "B", "B", "B"},
+//            {"B", "B", "B", "B", "R", "W", "B", "B", "B"},
+//            {" ", " ", " ", "R", "R", "R", "W", " ", " "},
+//            {"W", "W", "W", "R", "B", "B", " ", " ", " "},
+//            {"W", "W", "W", "R", "R", "R", " ", "B", "B"},
+//            {" ", "W", " ", "R", "E", " ", " ", " ", " "}
 //    };
+            {" ", " ", "R", " ", "B", " ", " ", " ", " "},
+            {" ", "R", "R", " ", "R", " ", " ", " ", " "},
+            {" ", "R", "R", " ", "R", "R", "R", " ", "R"},
+            {"W", "B", "B", " ", "R", "W", "W", "W", "W"},
+            {"W", "R", "R", " ", "R", "W", "W", "W", "W"},
+            {"W", "R", " ", " ", "R", "R", "R", "R", " "},
+            {"R", "R", " ", "R", "R", "R", " ", " ", " "},
+            {" ", " ", " ", "R", "R", "R", " ", " ", " "},
+            {" ", " ", " ", "R", "E", "B", " ", " ", " "}
+    };
 
     private BFObject[][] battleField = new BFObject[9][9];
 
     public BattleField() {
+
         drawBattleField();
     }
 
@@ -49,7 +51,40 @@ public class BattleField implements Drawable {
         return (v - 1) * 64 + "_" + (h - 1) * 64;
     }
 
+    private void randomBattleField() {
+        System.out.println();
+        System.out.println();
+
+        Random ran = new Random();
+        for (int i = 0; i < 9; ++i) {
+            for (int k = 0; k < 9; ++k) {
+                int r = ran.nextInt(4);
+                switch (r) {
+                    case 0:
+                        battleFieldTemplate[i][k] = "B";
+                        break;
+                    case 1:
+                        battleFieldTemplate[i][k] = "R";
+                        break;
+                    case 2:
+                        battleFieldTemplate[i][k] = "W";
+                        break;
+                    case 3:
+                        battleFieldTemplate[i][k] = " ";
+                        break;
+
+                }
+//                System.out.print(battleFieldTemplate[i][k] + " ");
+            }
+//            System.out.println();
+        }
+        battleFieldTemplate[8][4] = "E";
+        battleFieldTemplate[0][0] = " ";
+        battleFieldTemplate[8][1] = " ";
+    }
+
     private void drawBattleField() {
+//        randomBattleField();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 String coordinates = getQuadrantXY(i + 1, j + 1);
@@ -77,6 +112,10 @@ public class BattleField implements Drawable {
         }
     }
 
+    public String[][] getBattleFieldTemplate() {
+        return battleFieldTemplate;
+    }
+
     @Override
     public void draw(Graphics g) {
         for (int j = 0; j < battleField.length; j++) {
@@ -98,15 +137,15 @@ public class BattleField implements Drawable {
         return battleFieldTemplate[v][h];
     }
 
-    @Override
-    public String toString() {
-        if (this.equals("Rock")) return "R";
-        return "P";
-
-    }
+//    @Override
+//    public String toString() {
+//        if (this.equals("Rock")) return "R";
+//        return "P";
+//
+//    }
 
     public String getAggressorLocation() {
-        return "128_0";
+        return "0_0";
     }
 
     public int getBfWidth() {

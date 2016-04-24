@@ -38,4 +38,9 @@ public class Water extends SimpleBFObject {
         });
         g2d.setComposite(org);
     }
+
+    @Override
+    public String toString() {
+        return "W";
+    }
 }

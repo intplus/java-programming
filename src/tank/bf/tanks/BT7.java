@@ -12,16 +12,22 @@ import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
-public class BT7 extends AbstractTank {
+public class BT7 extends AbstractTank{
     private Image iTank_up;
     private Image iTank_down;
     private Image iTank_left;
     private Image iTank_right;
 //    private Image iTank;
     boolean target = false;
+    private int lastX;
+    private int lastY;
+    private Logic logic;
 
     int speed = 5;
+    LinkedList<String> rezList2 = new LinkedList<>();
 
     @Override
     public int getSpeed() {
@@ -36,6 +42,8 @@ public class BT7 extends AbstractTank {
     public BT7(BattleField bf, int x, int y, Direction direction) {
         super(bf, x, y, direction);
         movePath = 1;
+        logic = new Logic();
+        rezList2 = logic.getRezList();
 //        setImages();
         try {
             iTank_up = ImageIO.read(new File("bt_up.png").getAbsoluteFile());
@@ -68,36 +76,91 @@ public class BT7 extends AbstractTank {
             Direction.RIGHT,
             Direction.LEFT
     };
+    public void attack() {
+
+    }
 
     @Override
     public Action setUp() throws Exception {
 
-
-//        turn((Direction) actionsDirection[ran(4)]);
-        return (Action) actions[step()];
-
-    }
-    private int step() throws Exception {
+        int act = 0;
         if (!target) {
-            searchWay(this);
+            logic.searchWay(this);
             target = true;
         }
         int choice;
-        choice = ran(1);
+        choice = ran(3);
+        System.out.println(rezList2);
 
         switch (choice) {
-            case 0: if (rezList.size() != 0) {
-                System.out.println(rezList);
-                stepTurn(rezList.getLast());
-
-            } else {
-                target = false;
-            }
+            case 0:
+            case 2:
+                moveToQuadrant();
                 break;
-            case 1: break;
+            case 1:
+                act = 1;
+                break;
         }
-        return choice;
+        System.out.println(getDirection());
+//        turn((Direction) actionsDirection[ran(4)]);
+        return (Action) actions[act];
+
     }
+    private void moveToQuadrant() {
+        try {
+            while (true) {
+                String str = rezList2.getLast();
+                int x = Integer.parseInt(str.split("_")[0]);
+                int y = Integer.parseInt(str.split("_")[1]);
+                int xt = this.getX() / 64;
+                int yt = this.getY() / 64;
+                System.out.println("tank = " + xt + " : " + yt);
+                System.out.println("move to " + x + " : " + y);
+
+                if (x != xt) {
+                    turn(x > xt ? Direction.RIGHT :
+                            Direction.LEFT);
+                    System.out.print(getDirection());
+                    return;
+                }
+                if (y != yt) {
+                    turn(y > yt ? Direction.DOWN :
+                            Direction.UP);
+                    System.out.print(getDirection());
+                    return;
+                }
+                if (rezList2.size() != 0) {
+                    rezList2.removeLast();
+                }
+            }
+        } catch (NoSuchElementException e) {
+            System.out.println("YOU WIN");
+            System.exit(0);
+        }
+
+    }
+
+//    private int step() throws Exception {
+//        if (!target) {
+//            logic.searchWay(this);
+//            target = true;
+//        }
+//        int choice;
+//        choice = ran(1);
+//
+//        switch (choice) {
+//            case 0: if (rezList2.size() != 0) {
+//                System.out.println(rezList2);
+//                stepTurn(rezList2.getLast());
+//
+//            } else {
+//                target = false;
+//            }
+//                break;
+//            case 1: break;
+//        }
+//        return choice;
+//    }
 
 
     private void stepTurn(String str) throws Exception {
@@ -124,8 +187,9 @@ public class BT7 extends AbstractTank {
 
         if (str2.equals(str)) {
             System.out.println("remove");
-            rezList.removeLast();
+            rezList2.removeLast();
         }
+
     }
 
     @Override

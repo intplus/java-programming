@@ -36,5 +36,10 @@ public class Brick extends SimpleBFObject {
                 });
         }
     }
+
+    @Override
+    public String toString() {
+        return "B";
+    }
 }
 

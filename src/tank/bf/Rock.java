@@ -35,4 +35,9 @@ public class Rock extends SimpleBFObject {
 
         }
     }
+
+    @Override
+    public String toString() {
+        return "R";
+    }
 }

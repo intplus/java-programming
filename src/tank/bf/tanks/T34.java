@@ -54,6 +54,19 @@ public class T34 extends AbstractTank {
         turn((Direction) actionsDirection[ran(4)]);
         return (Action) actions[ran(2)];
     }
+//    public Action setUp() {
+//        if (step >= actoins.length) {
+//            step = 0;
+//        }
+//        if (!(actoins[step] instanceof Action)) {
+//            turn((Direction) actoins[step++]);
+//        }
+//        if (step >= actoins.length) {
+//            step = 0;
+//        }
+//        return (Action) actoins[step++];
+//    }
+
 //    private void setImage() {
 //        tankImage = new Image[5];
 //        try{

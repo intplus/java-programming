@@ -1,35 +1,15 @@
 package tank.bf.tanks;
 
-// new version
-
-import lesson5.search.AStar;
 import tank.ActionField;
 import tank.Direction;
 import tank.bf.BattleField;
-import tank.bf.Cell;
-import tank.bf.Rock;
-import tank.bf.Table;
-
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
-import java.util.LinkedList;
 import java.util.Random;
 
 public abstract class AbstractTank implements Tank {
 
-    Table<Cell> cellList = new Table<Cell>(AStar.WIDTH, AStar.HEIGHT);
-    Table blockList = new Table(AStar.WIDTH, AStar.HEIGHT);
-    LinkedList<Cell> openList = new LinkedList<Cell>();
-    LinkedList<Cell> closedList = new LinkedList<Cell>();
-    LinkedList<Cell> tmpList = new LinkedList<Cell>();
-    public LinkedList<String> rezList = new LinkedList<>();
-
     protected int x;
     protected int y;
-
 
     protected Direction direction;
 
@@ -37,24 +17,20 @@ public abstract class AbstractTank implements Tank {
     private int speed = 5;
     protected int movePath = 1;
     protected Image iTank;
+    private ActionField af;
+
 
     protected Color tankColor;
     protected Color towerColor;
     protected boolean destroyed;
-
-    public void setX(int x) {
-        this.x = x;
-    }
-    public void setY(int y) {
-        this.y = y;
-    }
+    protected Image[] images;
 
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
     public AbstractTank(BattleField bf) {
-        this(bf, 128, 512, Direction.UP);
+        this(bf, 64, 512, Direction.UP);
 
     }
     public AbstractTank(BattleField bf, int x, int y, Direction direction) {
@@ -66,17 +42,43 @@ public abstract class AbstractTank implements Tank {
 
     }
 
-    public void turn(Direction direction) throws Exception{
+
+
+    public void turn(Direction direction){
         this.direction = direction;
     }
 
-    public void move(){
+    public void move() throws Exception {
+        System.out.println("move. the end");
+        System.exit(0);
+//        af.processMove();
 
     }
+
+//    public void moveToQuadrant() {
+//        int x = 0;
+//        int y = 0;
+//        while (inequality(x, v)) {
+//            x = coordFieldX(qwX());
+//            if (x > v)
+//                move(LEFT);
+//            if (x < v)
+//                move(RIGHT);
+//        }
+//        while (inequality(y, h)) {
+//            y = coordFieldY(qwY());
+//            if (y > h)
+//                move(UP);
+//            if (y < h)
+//                move(DOWN);
+//        }
+//
+//    }
     public int ran(int i) {
         Random r = new Random();
         return r.nextInt(i);
     }
+
 
 
     public Bullet fire() {
@@ -107,6 +109,8 @@ public abstract class AbstractTank implements Tank {
     public void updateY (int y) {
         this.y += y;
     }
+
+
 
     public void draw(Graphics g) {
 
@@ -166,99 +170,5 @@ public abstract class AbstractTank implements Tank {
     public int getMovePath() {
         return movePath;
     }
-
-    public void searchWay(Tank t) {
-
-        for (int v = 0; v < 9; ++v) {
-            for (int h = 0; h < 9; ++h) {
-                if (bf.scanQuadrant2(v, h).equals("R")) {
-                    blockList.add(new Cell(h, v, true));
-                }
-            }
-        }
-
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                cellList.add(new Cell(j, i, blockList.get(j, i).blocked));
-            }
-        }
-
-        cellList.get(t.getX()/64, t.getY()/64).setAsStart();
-        cellList.get(4, 8).setAsFinish();
-        Cell start = cellList.get(t.getX()/64, t.getY()/64);
-        Cell finish = cellList.get(4, 8);
-
-        cellList.printp();
-
-        boolean found = false;
-        boolean noroute = false;
-
-        openList.push(start);
-
-        while (!found && !noroute) {
-
-            Cell min = openList.getFirst();
-            for (Cell cell : openList) {
-                if (cell.F < min.F) min = cell;
-            }
-
-            closedList.push(min);
-            openList.remove(min);
-
-            tmpList.clear();
-            tmpList.add(cellList.get(min.x,     min.y - 1));
-            tmpList.add(cellList.get(min.x + 1, min.y));
-            tmpList.add(cellList.get(min.x,     min.y + 1));
-            tmpList.add(cellList.get(min.x - 1, min.y));
-
-            for (Cell neightbour : tmpList) {
-
-                if (neightbour.blocked || closedList.contains(neightbour)) continue;
-
-                if (!openList.contains(neightbour)) {
-                    openList.add(neightbour);
-                    neightbour.parent = min;
-                    neightbour.H = neightbour.mandist(finish);
-                    neightbour.G = start.price(min);
-                    neightbour.F = neightbour.H + neightbour.G;
-                    continue;
-                }
-
-                if (neightbour.G + neightbour.price(min) < min.G) {
-
-                    neightbour.parent = min;
-                    neightbour.H = neightbour.mandist(finish);
-                    neightbour.G = start.price(min);
-                    neightbour.F = neightbour.H + neightbour.G;
-                }
-
-            }
-
-            if (openList.contains(finish)) {
-                found = true;
-            }
-
-            if (openList.isEmpty()) {
-                noroute = true;
-            }
-        }
-
-        if (!noroute) {
-            Cell rd = finish.parent;
-            while (!rd.equals(start)) {
-                rezList.add(rd.x + "_" + rd.y);
-
-                rd.road = true;
-                rd = rd.parent;
-                if (rd == null) break;
-            }
-            System.out.println(rd);
-            cellList.printp();
-        } else {
-            System.out.println("NO ROUTE");
-        }
-        System.out.println(rezList.size());
-    }
-
 
 }

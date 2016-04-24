@@ -10,4 +10,9 @@ public class Blank extends SimpleBFObject {
         color = new Color(138, 246, 138);
 
     }
+
+    @Override
+    public String toString() {
+        return " ";
+    }
 }

@@ -35,4 +35,8 @@ public class Eagle extends SimpleBFObject {
         }
     }
 
+    @Override
+    public String toString() {
+        return "E";
+    }
 }
