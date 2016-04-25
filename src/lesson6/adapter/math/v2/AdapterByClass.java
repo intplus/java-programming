@@ -3,14 +3,16 @@ package lesson6.adapter.math.v2;
 import lesson6.adapter.math.Arifmetika;
 import lesson6.adapter.math.v2.calc.Calculator;
 
-public class AdapterByClass extends Arifmetika implements Calculator {
+public class AdapterByClass implements Calculator {
     @Override
     public int summa(int a, int b) {
-        int [] array = {a, b};
-        return summa(array);
+        return Arifmetika.summa(new int[] {a, b});
     }
-    @Override
     public int multiply(int a, int b) {
-        return multiply(a, b);
+        int result = a;
+        for (int i = 0; i < b; ++i) {
+            result = Arifmetika.summa(new int[] {result, a});
+        }
+        return result;
     }
 }
