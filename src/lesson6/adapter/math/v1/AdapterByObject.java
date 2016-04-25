@@ -3,9 +3,6 @@ package lesson6.adapter.math.v1;
 import lesson6.adapter.math.Arifmetika;
 import lesson6.adapter.math.v1.calc.Calculator;
 
-/**
- * Created by alpo123 on 25.04.16.
- */
 public class AdapterByObject extends Calculator {
     private Arifmetika arifmetika;
 
