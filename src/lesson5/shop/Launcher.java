@@ -7,7 +7,15 @@ public class Launcher {
         Goods shop = new Goods();
         setUpProducts(shop);
 
-        ShopUI ui = new ShopUI(shop);
+        Customer c1 = new Customer("Alexander");
+        Customer c2 = new Customer("Oleg");
+        Service s = new Service();
+        s.sale(shop.getProducts().get(0), c1, 10);
+        s.sale(shop.getProducts().get(1), c2, 5);
+
+
+        SaleUI sui = new SaleUI(shop);
+//        ShopUI ui = new ShopUI(shop);
 
 //        Service.Initialisation();
 //        Service.printStock();

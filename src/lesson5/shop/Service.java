@@ -12,13 +12,18 @@ public class Service {
     public Service() {
 
     }
+
+    public static LinkedList<Purchase> getPurchase() {
+        return purchase;
+    }
+
     public static void Initialisation() {
         products.add(new Product("DS-2CD2012", 85));
         products.add(new Product("DS-2CD2032", 105));
         products.add(new Product("DS-2CD8153", 56));
 
-        customer.add(new Customer("Andrey", "2353431"));
-        customer.add(new Customer("Vlad", "2555600"));
+        customer.add(new Customer("Andrey"));
+        customer.add(new Customer("Vlad"));
 
 //        purchase.add(new Purchase(210116, customer.get(0), products.get(0), 10));
 //        purchase.add(new Purchase(220116, customer.get(0), products.get(2), 15));
@@ -28,11 +33,10 @@ public class Service {
 //        purchase.add(new Purchase(250116, customer.get(1), products.get(0), 8));
     }
 
-    public static void Sale(Product p, Customer c, int quantity) {
+    public void sale(Product p, Customer c, int quantity) {
         Date date = new Date();
-        purchase.add(new Purchase(p, c, quantity));
+        purchase.add(new Purchase(date, p, c, quantity));
         System.out.println(date + "  " + c + "  " + p + "   " + quantity + " pcs");
-
 
     }
 

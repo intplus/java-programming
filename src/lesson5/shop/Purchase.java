@@ -5,28 +5,24 @@ import java.util.Date;
 public class Purchase {
     Product p;
     Customer c;
-    int date;
     int quantity;
+    Date date;
+    int i = 0;
     public Purchase() {
 
     }
 
-    public int getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(int date) {
-        this.date = date;
-    }
 
-    public Purchase(Product p, Customer c, int quantity) {
+    public Purchase(Date date, Product p, Customer c, int quantity) {
+        i++;
+        this.date = date;
         this.p = p;
         this.c = c;
         this.quantity = quantity;
-    }
-
-    public Purchase(Date date, Product p, Customer c, int quantity) {
-
     }
 
     public Product getP() {

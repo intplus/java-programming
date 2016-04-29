@@ -8,6 +8,7 @@ public class Goods {
     private int quantity;
 
     ArrayList<Product> products = new ArrayList<>();
+//    ArrayList<Purchase> data = new ArrayList<>();
 
     public Goods () {
 
@@ -16,6 +17,9 @@ public class Goods {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+    }
+    public void sell(String name, Customer c, int quantity) {
+
     }
 
     public ArrayList<Product> getProducts() {

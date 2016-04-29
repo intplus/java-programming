@@ -8,6 +8,7 @@ import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
+
 public class ShopUI {
     private Goods shop;
     private JTextField tfName;
@@ -19,11 +20,11 @@ public class ShopUI {
 
         JFrame f = new JFrame("Best Shop");
         f.setMinimumSize(new Dimension(800, 600));
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setLocation(300, 100);
 
         f.getContentPane().add(createSellingPannel());
 
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
         f.setVisible(true);
     }
@@ -90,7 +91,7 @@ public class ShopUI {
 
                 int count = Integer.parseInt(tfCount.getText());
 
-                Service.Sale(p, c, count);
+//                Service.sale(p, c, count);
 
             }
         });
