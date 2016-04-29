@@ -1,5 +1,7 @@
 package lesson6.observerHW;
 
+import java.util.Observer;
+
 /**
  * Created by alpo123 on 27.04.16.
  */
@@ -8,9 +10,9 @@ public class Main {
         Publisher magazin = new Publisher();
         Publisher newspaper = new Publisher();
 
-        Subscriber ivan = new Subscriber("Ivan");
-        Subscriber petr = new Subscriber("Petr");
-        Subscriber sergii = new Subscriber("Sergii");
+        Observer ivan = new Subscriber();
+        Observer petr = new Subscriber();
+        Observer sergii = new Subscriber();
 
         magazin.addObserver(ivan);
         newspaper.addObserver(petr);

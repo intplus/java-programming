@@ -1,38 +1,25 @@
 package lesson6.observerHW;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Observable;
 
-public class Publisher implements Subject {
+public class Publisher extends Observable {
 
-    private List<Observer> observers;
+    private double jobResult = 0;
 
     public Publisher() {
-        observers = new ArrayList<>();
     }
     public void doTheJob() {
         Issue issue = new Issue();
         issue.number();
         if (issue.isHaveIssue()) {
             System.out.println(this.toString());
+            setChanged();
             notifyObservers();
         }
     }
-    @Override
-    public void addObserver(Observer o) {
-        observers.add(o);
-    }
 
-    @Override
-    public void removeObserver(Observer o) {
-        observers.remove(o);
-    }
-
-    @Override
-    public void notifyObservers() {
-        for (Observer o : observers) {
-            o.update();
-        }
+    public double getJobResult() {
+        return jobResult;
     }
 
 }
