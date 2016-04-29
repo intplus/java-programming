@@ -2,20 +2,17 @@ package lesson5.shop;
 
 public class Launcher {
     public static void main(String [] args) {
-//        Goods goods;
-//        Customer customer;
+
         Goods shop = new Goods();
         setUpProducts(shop);
 
         Customer c1 = new Customer("Alexander");
         Customer c2 = new Customer("Oleg");
-        Service s = new Service();
+        Service s = new Service(shop);
         s.sale(shop.getProducts().get(0), c1, 10);
         s.sale(shop.getProducts().get(1), c2, 5);
 
-
-        SaleUI sui = new SaleUI(shop);
-//        ShopUI ui = new ShopUI(shop);
+        new ShopUI(shop);
 
 //        Service.Initialisation();
 //        Service.printStock();

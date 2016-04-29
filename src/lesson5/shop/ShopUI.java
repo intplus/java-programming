@@ -5,31 +5,29 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
-import java.util.Date;
 import java.util.List;
 
 
 public class ShopUI {
     private Goods shop;
-    private JTextField tfName;
-    private JFormattedTextField tfCount;
     private int productIndex = 0;
+    private JFrame f;
 
     public ShopUI(Goods shop) {
         this.shop = shop;
 
-        JFrame f = new JFrame("Best Shop");
+        f = new JFrame("Best Shop");
         f.setMinimumSize(new Dimension(800, 600));
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setLocation(300, 100);
 
-        f.getContentPane().add(createSellingPannel());
-
+        f.setContentPane(createSellingPannel());
         f.pack();
         f.setVisible(true);
     }
 
     private JPanel createSellingPannel() {
+
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
 
@@ -81,6 +79,7 @@ public class ShopUI {
         JButton btnBuy = new JButton("BUY");
         panel.add(btnBuy, new GridBagConstraints(1, 3, 1, 1, 0, 0, GridBagConstraints.LINE_START, 0, new Insets(0, 0, 0, 0), 0, 0));
 
+        Service s = new Service(shop);
         btnBuy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -91,12 +90,15 @@ public class ShopUI {
 
                 int count = Integer.parseInt(tfCount.getText());
 
-//                Service.sale(p, c, count);
+                s.sale(p, c, count);
+                f.dispose();
+                new SaleUI(shop);
 
             }
         });
 
         return panel;
+
     }
 
     private class RBListener implements ActionListener {

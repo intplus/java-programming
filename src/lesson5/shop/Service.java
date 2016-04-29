@@ -7,9 +7,11 @@ public class Service {
     private static LinkedList<Product> products = new LinkedList<>();
     private static LinkedList<Customer> customer = new LinkedList<>();
     private static LinkedList<Purchase> purchase = new LinkedList<>();
+    Goods shop;
 
 
-    public Service() {
+    public Service(Goods shop) {
+        this.shop = shop;
 
     }
 
