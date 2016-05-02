@@ -14,31 +14,31 @@ public class BattleField implements Drawable {
     private int bfHeight = 576;
 
     private String[][] battleFieldTemplate = {
-//            {" ", " ", "B", "W", "W", "W", "B", "B", "B"},
-//            {" ", " ", " ", "W", "W", "W", " ", " ", "B"},
-//            {" ", " ", " ", "W", "W", "W", "B", "B", "B"},
-//            {"W", "W", "W", "W", "R", " ", "B", "B", "B"},
-//            {"B", "B", "B", "B", "R", "W", "B", "B", "B"},
-//            {" ", " ", " ", "R", "R", "R", "W", " ", " "},
-//            {"W", "W", "W", "R", "B", "B", " ", " ", " "},
-//            {"W", "W", "W", "R", "R", "R", " ", "B", "B"},
-//            {" ", "W", " ", "R", "E", " ", " ", " ", " "}
-//    };
-            {" ", " ", "R", " ", "B", " ", " ", " ", " "},
-            {" ", "R", "R", " ", "R", " ", " ", " ", " "},
-            {" ", "R", "R", " ", "R", "R", "R", " ", "R"},
-            {"W", "B", "B", " ", "R", "W", "W", "W", "W"},
-            {"W", "R", "R", " ", "R", "W", "W", "W", "W"},
-            {"W", "R", " ", " ", "R", "R", "R", "R", " "},
-            {"R", "R", " ", "R", "R", "R", " ", " ", " "},
-            {" ", " ", " ", "R", "R", "R", " ", " ", " "},
-            {" ", " ", " ", "R", "E", "B", " ", " ", " "}
+            {" ", " ", "B", "W", "W", "W", "B", "B", "B"},
+            {" ", " ", " ", "W", "W", "W", " ", " ", "B"},
+            {" ", " ", " ", "W", "W", "W", "B", "B", "B"},
+            {"W", "W", "W", "W", "R", " ", "B", "B", "B"},
+            {"B", "B", "B", "B", "R", "W", "B", "B", "B"},
+            {" ", " ", " ", "R", "R", "R", "W", " ", " "},
+            {"W", "W", "W", "R", "B", "B", " ", " ", " "},
+            {"W", "W", "W", "R", "R", "R", " ", "B", "B"},
+            {" ", "W", " ", "R", "E", " ", " ", " ", " "}
     };
+//            {" ", " ", "R", " ", "B", " ", " ", " ", " "},
+//            {" ", "R", "R", " ", "R", " ", " ", " ", " "},
+//            {" ", "R", "R", " ", "R", "R", "R", " ", "R"},
+//            {"W", "B", "B", " ", "R", "W", "W", "W", "W"},
+//            {"W", "R", "R", " ", "R", "W", "W", "W", "W"},
+//            {"W", "R", " ", " ", "R", "R", "R", "R", " "},
+//            {"R", "R", " ", "R", "R", "R", " ", " ", " "},
+//            {" ", " ", " ", "R", "R", "R", " ", " ", " "},
+//            {" ", " ", " ", "R", "E", "B", " ", " ", " "}
+//    };
 
     private BFObject[][] battleField = new BFObject[9][9];
 
     public BattleField() {
-
+//        randomBattleField();
         drawBattleField();
     }
 
@@ -74,17 +74,18 @@ public class BattleField implements Drawable {
                         break;
 
                 }
-//                System.out.print(battleFieldTemplate[i][k] + " ");
+                System.out.print(battleFieldTemplate[i][k] + " ");
             }
-//            System.out.println();
+            System.out.println();
         }
+        System.out.println("--------------------------------");
         battleFieldTemplate[8][4] = "E";
         battleFieldTemplate[0][0] = " ";
-        battleFieldTemplate[8][1] = " ";
+        battleFieldTemplate[7][8] = " ";
     }
 
     private void drawBattleField() {
-//        randomBattleField();
+        randomBattleField();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 String coordinates = getQuadrantXY(i + 1, j + 1);

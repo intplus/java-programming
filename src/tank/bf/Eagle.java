@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Eagle extends SimpleBFObject {
-    private String IMAGE_NAME = "hq.gif";
+    private String IMAGE_NAME = "hq2.png";
     private Image iTank;
     public Eagle(int x, int y) {
         super(x, y);

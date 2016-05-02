@@ -1,7 +1,6 @@
 package tank.bf.tanks;
 
 import tank.ActionField;
-import tank.Attak;
 import tank.Direction;
 import tank.bf.BattleField;
 import tank.bf.Water;
@@ -11,14 +10,14 @@ import java.awt.*;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
-
 
 public class Tiger extends AbstractTank {
     private Image iTank_up;
     private Image iTank_down;
     private Image iTank_left;
     private Image iTank_right;
+    private Logic logic;
+    boolean target = false;
 
     private ActionField af;
 
@@ -27,14 +26,16 @@ public class Tiger extends AbstractTank {
     public Tiger(ActionField af, BattleField bf) {
         super(bf);
         this.af = af;
-        movePath = 2;
+        logic = new Logic(bf, this);
+        movePath = 1;
         armor = 1;
 
     }
     public Tiger(ActionField af, BattleField bf, int x, int y, Direction direction) {
         super(bf, x, y, direction);
         this.af = af;
-        movePath = 2;
+        logic = new Logic(bf, this);
+        movePath = 1;
         setImage();
 
         armor =1;
@@ -52,6 +53,10 @@ public class Tiger extends AbstractTank {
         }
 
     }
+    private Object[] actions = new Object[] {
+            Action.MOVE,
+            Action.FIRE,
+    };
     private Object[] actionsDirection = new Object[] {
             Direction.UP,
             Direction.DOWN,
@@ -69,32 +74,31 @@ public class Tiger extends AbstractTank {
             super.destroy();
         }
     }
-
-
     @Override
-    public Action setUp() throws Exception{
-        Random r = new Random();
-        int k = 0;
-        int i = attack();
+    public Action setUp() throws Exception {
 
-        switch (i) {
-            case 1: turn(Direction.UP);
+        int act = 0;
+        T34 defender = (T34) af.getDefender();
+        int xd = defender.getX()/64;
+        int yd = defender.getY()/64;
+
+        logic.searchWay(this, xd, yd);
+
+        int choice;
+        choice = logic.ran(2);
+        System.out.println(logic.getRezList());
+
+        switch (choice) {
+            case 0:
+//            case 1:
+                logic.moveToQuadrant(this, logic.getRezList().size());
                 break;
-            case 2: turn(Direction.DOWN);
-                break;
-            case 3: turn(Direction.LEFT);
-                break;
-            case 4: turn(Direction.RIGHT);
+            case 1:
+                act = 1;
                 break;
         }
+        return (Action) actions[act];
 
-        do {
-            k = r.nextInt(3);
-        } while (k == 0);
-        if (k == 2) return Action.FIRE;
-        if (k == 1) return Action.MOVE;
-
-        return Action.MOVE;
     }
 
     @Override
@@ -148,31 +152,5 @@ public class Tiger extends AbstractTank {
 
         }
     }
-    int i = 1;
-    public int attack() throws Exception {
-
-        T34 defender = (T34) af.getDefender();
-
-        System.out.println("aggressor = " + this.getX()/64 + " : " + this.getY()/64);
-
-        int xd = defender.getX();
-        int yd = defender.getY();
-        System.out.println("defender = " + xd + " : " + yd);
-        int xa = this.getX();
-        int ya = this.getY();
-        i++;
-        if (i % 2 == 0) {
-            if (xa != xd) {
-                return (this.getX() > xd ? 3 : 4);
-            }
-        }
-        if (i % 2 != 0) {
-            if (ya != yd) {
-                return (this.getY() > yd ? 1 : 2);
-            }
-        }
-        return i;
-    }
-
 
 }

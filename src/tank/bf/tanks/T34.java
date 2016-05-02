@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 public class T34 extends AbstractTank {
     private String IMAGE_NAME;
@@ -46,6 +47,10 @@ public class T34 extends AbstractTank {
             Direction.RIGHT,
             Direction.LEFT
     };
+    public int ran(int i) {
+        Random r = new Random();
+        return r.nextInt(i);
+    }
 
 
     @Override

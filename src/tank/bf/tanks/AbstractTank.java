@@ -16,6 +16,7 @@ public abstract class AbstractTank implements Tank {
     protected BattleField bf;
     private int speed = 5;
     protected int movePath = 1;
+
     protected Image iTank;
     private ActionField af;
 
@@ -30,7 +31,7 @@ public abstract class AbstractTank implements Tank {
     }
 
     public AbstractTank(BattleField bf) {
-        this(bf, 64, 512, Direction.UP);
+        this(bf, 512, 448, Direction.UP);
 
     }
     public AbstractTank(BattleField bf, int x, int y, Direction direction) {
@@ -42,8 +43,6 @@ public abstract class AbstractTank implements Tank {
 
     }
 
-
-
     public void turn(Direction direction){
         this.direction = direction;
     }
@@ -54,32 +53,6 @@ public abstract class AbstractTank implements Tank {
 //        af.processMove();
 
     }
-
-//    public void moveToQuadrant() {
-//        int x = 0;
-//        int y = 0;
-//        while (inequality(x, v)) {
-//            x = coordFieldX(qwX());
-//            if (x > v)
-//                move(LEFT);
-//            if (x < v)
-//                move(RIGHT);
-//        }
-//        while (inequality(y, h)) {
-//            y = coordFieldY(qwY());
-//            if (y > h)
-//                move(UP);
-//            if (y < h)
-//                move(DOWN);
-//        }
-//
-//    }
-    public int ran(int i) {
-        Random r = new Random();
-        return r.nextInt(i);
-    }
-
-
 
     public Bullet fire() {
         int bulletX = -100;

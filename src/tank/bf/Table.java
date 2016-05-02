@@ -38,18 +38,18 @@ public class Table<T extends Cell> {
     /**
      * Печать всех клеток поля. Красиво.
      */
-    public void printp() {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                System.out.print(this.get(j, i));
-
-            }
-            System.out.println();
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println();
-    }
+//    public void printp() {
+//        for (int i = 0; i < 9; i++) {
+//            for (int j = 0; j < 9; j++) {
+//                System.out.print(this.get(j, i));
+//
+//            }
+//            System.out.println();
+//            System.out.println();
+//        }
+//        System.out.println();
+//        System.out.println();
+//    }
 
     public int width;
     public int height;

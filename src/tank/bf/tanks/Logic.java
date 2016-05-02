@@ -9,6 +9,8 @@ import tank.bf.Rock;
 import tank.bf.Table;
 
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.Random;
 
 /**
  * Created by alpo123 on 20.04.16.
@@ -19,6 +21,7 @@ public class Logic {
     private Tank tank;
     private T34 defender;
     private Tiger aggressor;
+
     Table<Cell> cellList = new Table<Cell>(AStar.WIDTH, AStar.HEIGHT);
     Table blockList = new Table(AStar.WIDTH, AStar.HEIGHT);
     LinkedList<Cell> openList = new LinkedList<Cell>();
@@ -56,18 +59,72 @@ public class Logic {
         aggressor.move();
 
     }
+//    public void nullList() {
+//        rezList.clear();
+//        System.out.println("After null = " + rezList);
+//    }
 
-    public void searchWay(Tank t) {
-        BattleField bf = new BattleField();
+    public void moveToQuadrant(Tank t, int step) throws Exception {
+
+        try {
+            while (true) {
+                String str = rezList.getLast();
+                int x = Integer.parseInt(str.split("_")[0]);
+                int y = Integer.parseInt(str.split("_")[1]);
+                int xt = t.getX() / 64;
+                int yt = t.getY() / 64;
+//                System.out.println("tank = " + xt + " : " + yt);
+//                System.out.println("move to " + x + " : " + y);
+
+                if (x != xt) {
+                    t.turn(x > xt ? Direction.RIGHT :
+                            Direction.LEFT);
+//                    System.out.print(t.getDirection());
+                    return;
+                }
+                if (y != yt) {
+                    t.turn(y > yt ? Direction.DOWN :
+                            Direction.UP);
+//                    System.out.print(t.getDirection());
+                    return;
+                }
+                if (rezList.size() != 0) {
+                    rezList.removeLast();
+                }
+            }
+        } catch (NoSuchElementException e) {
+            System.out.println("WIN");
+            t.turn((Direction) actionsDirection[ran(4)]);
+        }
+
+    }
+    public Object[] actionsDirection = new Object[] {
+            Direction.UP,
+            Direction.DOWN,
+            Direction.RIGHT,
+            Direction.LEFT
+    };
+    public int ran(int i) {
+        Random r = new Random();
+        return r.nextInt(i);
+    }
+
+
+    public void searchWay(Tank t, int targetX, int targetY) {
+//        BattleField bf = new BattleField();
+        rezList.clear();
+        openList.clear();
+        closedList.clear();
+        tmpList.clear();
 
         for (int v = 0; v < 9; ++v) {
             for (int h = 0; h < 9; ++h) {
                 if (bf.scanQuadrant(v, h) instanceof Rock) {
                     blockList.add(new Cell(h, v, true));
                 }
-                System.out.print(bf.scanQuadrant(v, h) + " ");
+//                System.out.print(bf.scanQuadrant(v, h) + " ");
             }
-            System.out.println();
+//            System.out.println();
         }
 
         for (int i = 0; i < 9; i++) {
@@ -77,11 +134,11 @@ public class Logic {
         }
 
         cellList.get(t.getX()/64, t.getY()/64).setAsStart();
-        cellList.get(4, 8).setAsFinish();
+        cellList.get(targetX, targetY).setAsFinish();
         Cell start = cellList.get(t.getX()/64, t.getY()/64);
-        Cell finish = cellList.get(4, 8);
+        Cell finish = cellList.get(targetX, targetY);
 
-        cellList.printp();
+//        cellList.printp();
 
         boolean found = false;
         boolean noroute = false;
@@ -145,12 +202,13 @@ public class Logic {
                 rd = rd.parent;
                 if (rd == null) break;
             }
+            rezList.addFirst(targetX + "_" + targetY);
             System.out.println(rd);
-            cellList.printp();
+//            cellList.printp();
         } else {
             System.out.println("NO ROUTE");
         }
-        System.out.println(rezList.size() + "this");
+//        System.out.println(rezList.size() + "this");
     }
 
 }

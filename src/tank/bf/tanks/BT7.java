@@ -27,7 +27,7 @@ public class BT7 extends AbstractTank{
     private Logic logic;
 
     int speed = 5;
-    LinkedList<String> rezList2 = new LinkedList<>();
+//    LinkedList<String> rezList2 = new LinkedList<>();
 
     @Override
     public int getSpeed() {
@@ -42,8 +42,7 @@ public class BT7 extends AbstractTank{
     public BT7(BattleField bf, int x, int y, Direction direction) {
         super(bf, x, y, direction);
         movePath = 1;
-        logic = new Logic();
-        rezList2 = logic.getRezList();
+        logic = new Logic(bf, this);
 //        setImages();
         try {
             iTank_up = ImageIO.read(new File("bt_up.png").getAbsoluteFile());
@@ -70,7 +69,7 @@ public class BT7 extends AbstractTank{
             Action.MOVE,
             Action.FIRE,
     };
-    private Object[] actionsDirection = new Object[] {
+    public Object[] actionsDirection = new Object[] {
             Direction.UP,
             Direction.DOWN,
             Direction.RIGHT,
@@ -85,17 +84,17 @@ public class BT7 extends AbstractTank{
 
         int act = 0;
         if (!target) {
-            logic.searchWay(this);
+            logic.searchWay(this, 4, 8);
             target = true;
         }
         int choice;
-        choice = ran(3);
-        System.out.println(rezList2);
+        choice = logic.ran(2);
+        System.out.println(logic.getRezList());
 
         switch (choice) {
             case 0:
-            case 2:
-                moveToQuadrant();
+//            case 1:
+                logic.moveToQuadrant(this, logic.getRezList().size());
                 break;
             case 1:
                 act = 1;
@@ -104,91 +103,6 @@ public class BT7 extends AbstractTank{
         System.out.println(getDirection());
 //        turn((Direction) actionsDirection[ran(4)]);
         return (Action) actions[act];
-
-    }
-    private void moveToQuadrant() {
-        try {
-            while (true) {
-                String str = rezList2.getLast();
-                int x = Integer.parseInt(str.split("_")[0]);
-                int y = Integer.parseInt(str.split("_")[1]);
-                int xt = this.getX() / 64;
-                int yt = this.getY() / 64;
-                System.out.println("tank = " + xt + " : " + yt);
-                System.out.println("move to " + x + " : " + y);
-
-                if (x != xt) {
-                    turn(x > xt ? Direction.RIGHT :
-                            Direction.LEFT);
-                    System.out.print(getDirection());
-                    return;
-                }
-                if (y != yt) {
-                    turn(y > yt ? Direction.DOWN :
-                            Direction.UP);
-                    System.out.print(getDirection());
-                    return;
-                }
-                if (rezList2.size() != 0) {
-                    rezList2.removeLast();
-                }
-            }
-        } catch (NoSuchElementException e) {
-            System.out.println("YOU WIN");
-            System.exit(0);
-        }
-
-    }
-
-//    private int step() throws Exception {
-//        if (!target) {
-//            logic.searchWay(this);
-//            target = true;
-//        }
-//        int choice;
-//        choice = ran(1);
-//
-//        switch (choice) {
-//            case 0: if (rezList2.size() != 0) {
-//                System.out.println(rezList2);
-//                stepTurn(rezList2.getLast());
-//
-//            } else {
-//                target = false;
-//            }
-//                break;
-//            case 1: break;
-//        }
-//        return choice;
-//    }
-
-
-    private void stepTurn(String str) throws Exception {
-        String str2 = Integer.toString(this.getX()/64) + "_" + Integer.toString(this.getY()/64);
-//        System.out.println("str2 = " + str2);
-
-//        System.out.println("str = " + str);
-
-        int separator = str.indexOf("_");
-        int x = Integer.parseInt(str
-                .substring(0, separator));
-        int y = Integer.parseInt(str
-                .substring(separator + 1));
-
-        int xt = this.getX()/64;
-        int yt = this.getY()/64;
-
-        if (xt != x) {
-            turn(xt > x ? Direction.LEFT : Direction.RIGHT);
-        }
-        if (yt != y) {
-            turn(yt > y ? Direction.UP : Direction.DOWN);
-        }
-
-        if (str2.equals(str)) {
-            System.out.println("remove");
-            rezList2.removeLast();
-        }
 
     }
 
