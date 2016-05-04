@@ -16,6 +16,7 @@ public class Gui extends JPanel implements ActionListener {
     JLabel picture;
     JButton b1, exitButton;
     JRadioButton tigerButton, bt7Button;
+    JFrame frame;
 
 
     public Gui() {
@@ -67,6 +68,7 @@ public class Gui extends JPanel implements ActionListener {
         exitButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent event) {
+//                JOptionPane.showMessageDialog(exitButton, "Goodbye!", "OK", JOptionPane.WARNING_MESSAGE);
                 System.exit(0);
             }
         });
@@ -85,6 +87,9 @@ public class Gui extends JPanel implements ActionListener {
             System.err.println("bt7");
             ch = 1;
         }
+
+        startGame();
+
 //        javax.swing.SwingUtilities.invokeLater(new Runnable() {
 //            public void run() {
 //                try {
@@ -96,6 +101,15 @@ public class Gui extends JPanel implements ActionListener {
 //            }
 //        });
 
+
+
+//        try {
+//            new StartGame(ch);
+//        } catch (Exception e1) {
+//            e1.printStackTrace();
+//        }
+    }
+    private void startGame() {
         Thread thr = new Thread() {
             @Override
             public void run() {
@@ -108,11 +122,6 @@ public class Gui extends JPanel implements ActionListener {
         };
         thr.start();
 
-//        try {
-//            new StartGame(ch);
-//        } catch (Exception e1) {
-//            e1.printStackTrace();
-//        }
     }
 
 //    public void actionPerformed(ActionEvent e) {
@@ -130,11 +139,30 @@ public class Gui extends JPanel implements ActionListener {
             return null;
         }
     }
-    public static void createAndShowGUI() {
+    public void endGame(String str) {
+        System.out.println("this" + str);
+        frame.getContentPane().removeAll();
+//        frame.dispose();
+        JLabel text = new JLabel(str);
+        frame.getContentPane().add(text);
+        frame.pack();
+        frame.repaint();
+
+    }
+    private void createEndGame() {
+//        frame.getContentPane().removeAll();
+        frame.dispose();
+        JLabel text = new JLabel("str");
+        frame.getContentPane().add(text);
+        frame.pack();
+        frame.repaint();
+    }
+    public void createAndShowGUI() {
         //Create and set up the window.
-        JFrame frame = new JFrame("Tank");
+        frame = new JFrame("Tank");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(400, 200));
+        frame.setLocation(400, 200);
 
         //Create and set up the content pane.
         JComponent newContentPane = new Gui();

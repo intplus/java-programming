@@ -1,5 +1,8 @@
 package tank;
 
+import tank.bf.BattleField;
+
+import javax.management.BadAttributeValueExpException;
 import java.awt.*;
 
 /**
@@ -20,6 +23,7 @@ public class StartGame {
 //
 //            }
 //        });
+
         ActionField af = new ActionField(ch);
         af.runTheGame();
 

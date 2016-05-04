@@ -20,9 +20,9 @@ public class BattleField implements Drawable {
             {"W", "W", "W", "W", "R", " ", "B", "B", "B"},
             {"B", "B", "B", "B", "R", "W", "B", "B", "B"},
             {" ", " ", " ", "R", "R", "R", "W", " ", " "},
-            {"W", "W", "W", "R", "B", "B", " ", " ", " "},
-            {"W", "W", "W", "R", "R", "R", " ", "B", "B"},
-            {" ", "W", " ", "R", "E", " ", " ", " ", " "}
+            {"W", "W", "W", "R", "B", "B", " ", " ", "B"},
+            {"W", "W", "W", "R", "R", "R", " ", "B", " "},
+            {" ", "W", " ", " ", "E", "R", " ", " ", " "}
     };
 //            {" ", " ", "R", " ", "B", " ", " ", " ", " "},
 //            {" ", "R", "R", " ", "R", " ", " ", " ", " "},
@@ -85,7 +85,7 @@ public class BattleField implements Drawable {
     }
 
     private void drawBattleField() {
-        randomBattleField();
+//        randomBattleField();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 String coordinates = getQuadrantXY(i + 1, j + 1);
