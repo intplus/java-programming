@@ -65,16 +65,7 @@ public class BT7 extends AbstractTank{
 //            throw new IllegalStateException("Can't find images");
 //        }
 //    }
-    private Object[] actions = new Object[] {
-            Action.MOVE,
-            Action.FIRE,
-    };
-    public Object[] actionsDirection = new Object[] {
-            Direction.UP,
-            Direction.DOWN,
-            Direction.RIGHT,
-            Direction.LEFT
-    };
+
     public void attack() {
 
     }

@@ -26,10 +26,6 @@ public abstract class AbstractTank implements Tank {
     protected boolean destroyed;
     protected Image[] images;
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
     public AbstractTank(BattleField bf) {
         this(bf, 512, 448, Direction.UP);
 
@@ -42,6 +38,16 @@ public abstract class AbstractTank implements Tank {
         this.destroyed = false;
 
     }
+    protected Object[] actions = new Object[] {
+            Action.MOVE,
+            Action.FIRE,
+    };
+    protected Object[] actionsDirection = new Object[] {
+            Direction.UP,
+            Direction.DOWN,
+            Direction.RIGHT,
+            Direction.LEFT
+    };
 
     public void turn(Direction direction){
         this.direction = direction;
@@ -137,6 +143,10 @@ public abstract class AbstractTank implements Tank {
 
     public Direction getDirection() {
         return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 
     @Override

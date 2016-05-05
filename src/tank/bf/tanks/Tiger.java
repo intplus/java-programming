@@ -53,18 +53,6 @@ public class Tiger extends AbstractTank {
         }
 
     }
-    private Object[] actions = new Object[] {
-            Action.MOVE,
-            Action.FIRE,
-    };
-    private Object[] actionsDirection = new Object[] {
-            Direction.UP,
-            Direction.DOWN,
-            Direction.RIGHT,
-            Direction.LEFT
-    };
-
-
 
     @Override
     public void destroy() {

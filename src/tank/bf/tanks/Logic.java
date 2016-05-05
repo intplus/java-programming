@@ -42,27 +42,6 @@ public class Logic {
         return rezList;
     }
 
-    public void attackDefender() throws Exception {
-        T34 defender = (T34) af.getDefender();
-        Tiger aggressor = (Tiger) af.getAggressor();
-        int xd = defender.getX()/64;
-        int yd = defender.getY()/64;
-        int xa = aggressor.getX()/64;
-        int ya = aggressor.getY()/64;
-
-        if (xa != xd) {
-            aggressor.turn(xa > xd ? Direction.LEFT : Direction.RIGHT);
-        }
-        if (ya != yd) {
-            aggressor.turn(ya > yd ? Direction.UP : Direction.DOWN);
-        }
-        aggressor.move();
-
-    }
-//    public void nullList() {
-//        rezList.clear();
-//        System.out.println("After null = " + rezList);
-//    }
 
     public void moveToQuadrant(Tank t, int step) throws Exception {
 

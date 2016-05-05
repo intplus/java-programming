@@ -1,8 +1,8 @@
 package tank.bf.tanks;
 
+import tank.ActionField;
 import tank.Direction;
-import tank.bf.BattleField;
-import tank.bf.Water;
+import tank.bf.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,9 +18,14 @@ public class T34 extends AbstractTank {
     private Image iTank_down;
     private Image iTank_left;
     private Image iTank_right;
+    private ActionField af;
+    private Logic logic;
 
-    public T34(BattleField bf) {
+    public T34(ActionField af, BattleField bf) {
         super(bf);
+        this.af = af;
+        logic = new Logic(bf, this);
+
         try {
             iTank_up = ImageIO.read(new File("t34_up.png").getAbsoluteFile());
             iTank_down = ImageIO.read(new File("t34_down.png").getAbsoluteFile());
@@ -36,41 +41,99 @@ public class T34 extends AbstractTank {
         super(bf, x, y, direction);
     }
 
-    private Object[] actions = new Object[] {
-            Action.MOVE,
-            Action.FIRE,
-
-    };
-    private Object[] actionsDirection = new Object[] {
-            Direction.UP,
-            Direction.DOWN,
-            Direction.RIGHT,
-            Direction.LEFT
-    };
     public int ran(int i) {
         Random r = new Random();
         return r.nextInt(i);
     }
 
-
     @Override
-    public Action setUp() throws Exception{
+    public Action setUp() throws Exception {
+        int xd = 0;
+        int yd = 0;
 
-        turn((Direction) actionsDirection[ran(4)]);
-        return (Action) actions[ran(2)];
+        int act = 0;
+        if (af.getAggressor() instanceof BT7) {
+            BT7 aggressor = (BT7) af.getAggressor();
+            xd = aggressor.getX()/64;
+            yd = aggressor.getY()/64;
+
+        }
+
+        if (af.getAggressor() instanceof Tiger) {
+            Tiger aggressor = (Tiger) af.getAggressor();
+            xd = aggressor.getX()/64;
+            yd = aggressor.getY()/64;
+
+        }
+
+        logic.searchWay(this, xd, yd);
+
+        int choice;
+        choice = logic.ran(2);
+        System.out.println(logic.getRezList());
+
+        if (lineScanner()) {
+            choice = 1;
+        }
+        if (lineScannerEagle()) {
+            choice = 0;
+        }
+
+        switch (choice) {
+            case 0:
+                logic.moveToQuadrant(this, logic.getRezList().size());
+                break;
+            case 1:
+
+                act = 1;
+                break;
+        }
+        return (Action) actions[act];
+
     }
-//    public Action setUp() {
-//        if (step >= actoins.length) {
-//            step = 0;
-//        }
-//        if (!(actoins[step] instanceof Action)) {
-//            turn((Direction) actoins[step++]);
-//        }
-//        if (step >= actoins.length) {
-//            step = 0;
-//        }
-//        return (Action) actoins[step++];
-//    }
+    private boolean lineScannerEagle() {
+        for (int i = 1; i < 9; ++i) {
+            if (checkBrick(this.getY(), this.getX() - i)) {
+                break;
+            }
+            if (checkBrick(this.getY(), this.getX() + i)) {
+                break;
+            }
+            if (checkBrick(this.getY() + i, this.getX())) {
+                break;
+            }
+            if (checkEagle(this.getY(), this.getX() - i)) {
+                return true;
+            }
+            if (checkEagle(this.getY(), this.getX() + i)) {
+                return true;
+            }
+            if (checkEagle(this.getY() + i, this.getX())) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+    private boolean checkBrick(int v, int h) {
+        if (v > 8 || v < 0 || h > 8 || h < 0) {
+            return false;
+        }
+        if (bf.scanQuadrant(v, h) instanceof Brick) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkEagle(int v, int h) {
+        if (v > 8 || v < 0 || h > 8 || h < 0) {
+            return false;
+        }
+        if (bf.scanQuadrant(v, h) instanceof Eagle) {
+            return true;
+        }
+        return false;
+    }
 
 //    private void setImage() {
 //        tankImage = new Image[5];
@@ -88,6 +151,81 @@ public class T34 extends AbstractTank {
 //    }
 //
 //    }
+//public void cleanPoint() throws Exception {
+//
+//    for (int i = 1; i < 5; i++) {
+//        direction.setId(i);
+//        while (lineScanner(direction.getId())) {
+//            processFire();
+//        }
+//    }
+//}
+    private boolean checkRock(int v, int h) {
+        if (v > 8 || v < 0 || h > 8 || h < 0) {
+            return false;
+        }
+        if (bf.scanQuadrant(v, h) instanceof Rock) {
+            return true;
+        }
+        return false;
+    }
+    private boolean lineScanner() {
+
+        int xa = 0;
+        int ya = 0;
+        if (af.getAggressor() instanceof BT7) {
+            BT7 aggressor = (BT7) af.getAggressor();
+            xa = aggressor.getX()/64;
+            ya = aggressor.getY()/64;
+
+        }
+
+        if (af.getAggressor() instanceof Tiger) {
+            Tiger aggressor = (Tiger) af.getAggressor();
+            xa = aggressor.getX()/64;
+            ya = aggressor.getY()/64;
+
+        }
+        for (int i = 1; i < 9; ++i) {
+
+            if (!checkRock(this.getY()/64 - i, this.getX()/64)) {
+                if (this.getX() / 64 == xa && this.getY() / 64 - i == ya) {
+                    turn(Direction.UP);
+                    return true;
+                }
+            } else {
+                break;
+            }
+            if (!checkRock(this.getY() + i, this.getX() / 64)) {
+                if (this.getX() / 64 == xa && this.getY() / 64 + i == ya) {
+                    turn(Direction.DOWN);
+                    return true;
+                }
+            } else {
+                break;
+            }
+
+            if (!checkRock(this.getY()/64, this.getX()/64 - i)) {
+                if (this.getX() / 64 - i == xa && this.getY() / 64 == ya) {
+                    turn(Direction.LEFT);
+                    return true;
+                }
+            } else {
+                break;
+            }
+            if (!checkRock(this.getY()/64, this.getX()/64 + i)) {
+                if (this.getX()/64 + i == xa && this.getX() / 64 == ya) {
+                    turn(Direction.RIGHT);
+                    return true;
+                }
+            } else {
+                break;
+            }
+        }
+
+        return false;
+    }
+
 
 
     @Override
