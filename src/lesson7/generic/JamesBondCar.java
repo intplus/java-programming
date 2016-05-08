@@ -13,6 +13,10 @@ public class JamesBondCar extends Car {
 
     }
 
+    public JamesBondCar(int cd) {
+        this.setCountDoor(cd);
+    }
+
     public void submarge() {
         currentSubmergeDepth = 50;
         // Some code

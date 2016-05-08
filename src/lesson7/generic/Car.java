@@ -36,4 +36,5 @@ public abstract class Car {
     public void setColor(Color color) {
         this.color = color;
     }
+
 }

@@ -13,6 +13,10 @@ public class BatmanCar extends Car {
 
     }
 
+    public BatmanCar(int cd) {
+        this.setCountDoor(cd);
+    }
+
     public void fly() {
         abilityFly = 50;
         // Some code
