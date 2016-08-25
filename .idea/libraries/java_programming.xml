@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="java-programming">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/postgresql-9.4.1208.jar!/" />
+      <root url="jar://$PROJECT_DIR$/test.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

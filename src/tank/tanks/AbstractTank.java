@@ -1,10 +1,8 @@
-package tank.bf.tanks;
+package tank.tanks;
 
-// new version
-
+import tank.ActionField;
 import tank.Direction;
 import tank.bf.BattleField;
-
 import java.awt.*;
 
 public abstract class AbstractTank implements Tank {
@@ -14,28 +12,22 @@ public abstract class AbstractTank implements Tank {
 
     protected Direction direction;
 
-    private BattleField bf;
-    private int speed = 5;
+    protected BattleField bf;
+    private int speed = 10;
     protected int movePath = 1;
+
+    protected Image iTank;
+    private ActionField af;
+
 
     protected Color tankColor;
     protected Color towerColor;
-    private boolean destroyed;
-
-
-    public void setX(int x) {
-        this.x = x;
-    }
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
+    protected boolean destroyed;
+    protected Image[] images;
 
     public AbstractTank(BattleField bf) {
-        this(bf, 128, 512, Direction.UP);
+        this(bf, 64, 512, Direction.UP);
+
     }
     public AbstractTank(BattleField bf, int x, int y, Direction direction) {
         this.bf = bf;
@@ -43,42 +35,51 @@ public abstract class AbstractTank implements Tank {
         this.y = y;
         this.direction = direction;
         this.destroyed = false;
-    }
 
-    public void turn(Direction direction) throws Exception{
+    }
+    protected Object[] actions = new Object[] {
+            Action.MOVE,
+            Action.FIRE,
+    };
+    protected Object[] actionsDirection = new Object[] {
+            Direction.UP,
+            Direction.DOWN,
+            Direction.RIGHT,
+            Direction.LEFT
+    };
+
+    public void turn(Direction direction){
         this.direction = direction;
     }
 
-    public void move(){
+    public void move() throws Exception {
+//        System.out.println("move. the end");
+//        System.exit(0);
+//        af.processMove();
+//
     }
 
     public Bullet fire() {
         int bulletX = -100;
         int bulletY = -100;
+
         if (direction == Direction.UP) {
-            bulletX = x + 25;
-            bulletY = y - 64;
+            bulletX = x + 23;
+            bulletY = y - 10;
         } else if (direction == Direction.DOWN) {
-            bulletX = x + 25;
+            bulletX = x + 23;
             bulletY = y + 64;
         } else if (direction == Direction.LEFT) {
-            bulletX = x - 64;
-            bulletY = y + 25;
+            bulletX = x - 10;
+            bulletY = y + 23;
         } else if (direction == Direction.RIGHT) {
             bulletX = x + 64;
-            bulletY = y + 25;
+            bulletY = y + 23;
         }
         return new Bullet(bulletX, bulletY, direction);
     }
 
-
-
-    public void moveRandom() throws Exception {
-
-    }
-    public void moveToQuadrant(int v, int h) throws Exception {
-
-    }
+    @Deprecated
     public void clean() throws Exception {
 
     }
@@ -89,7 +90,10 @@ public abstract class AbstractTank implements Tank {
         this.y += y;
     }
 
+
+
     public void draw(Graphics g) {
+
         if (!destroyed) {
             g.setColor(tankColor);
             g.fillRect(this.getX() + 20, this.getY() + 20, 24, 24);
@@ -116,6 +120,7 @@ public abstract class AbstractTank implements Tank {
                 g.fillRect(getX() + 26, getY() + 28, 34, 8);
             }
         }
+
     }
     @Override
     public boolean isDestroyed() {
@@ -123,6 +128,7 @@ public abstract class AbstractTank implements Tank {
     }
 
     public void destroy() {
+        System.err.println("destroyed");
         destroyed = true;
     }
     public int getSpeed() {
@@ -141,10 +147,13 @@ public abstract class AbstractTank implements Tank {
         return direction;
     }
 
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
     @Override
     public int getMovePath() {
         return movePath;
     }
-
 
 }

@@ -1,17 +1,18 @@
-package tank.bf.tanks;
+package tank.tanks;
 
 import tank.bf.BFObject;
 
 import java.awt.*;
 
 public abstract class SimpleBFObject implements BFObject {
+
     // current position on BF
     private int x;
     private int y;
 
     protected Color color;
 
-    private boolean isDestroyed = false;
+    protected boolean isDestroyed = false;
 
     public SimpleBFObject(int x, int y) {
         this.x = x;

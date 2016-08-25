@@ -1,4 +1,4 @@
-package tank.bf.tanks;
+package tank.tanks;
 
 import tank.Direction;
 import tank.bf.Distroyable;
@@ -8,7 +8,9 @@ public interface Tank extends Drawable, Distroyable {
 
     public Action setUp() throws Exception;
 
-    public void move();
+    public void move() throws Exception;
+
+    public void turn(Direction direction);
 
     public Bullet fire();
 
@@ -25,4 +27,5 @@ public interface Tank extends Drawable, Distroyable {
     public int getSpeed();
 
     public int getMovePath();
+
 }
